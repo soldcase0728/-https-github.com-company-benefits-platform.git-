@@ -1,0 +1,184 @@
+# Dependencies
+node_modules/
+.pnp
+.pnp.js
+
+# Build outputs
+dist/
+build/
+out/
+.next/
+.nuxt/
+.vuepress/dist/
+.serverless/
+.fusebox/
+.dynamodb/
+.tern-port
+.turbo/
+
+# Testing
+coverage/
+.nyc_output/
+test-results/
+playwright-report/
+playwright/.cache/
+cypress/videos/
+cypress/screenshots/
+
+# Environment variables
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+.env*.local
+*.env
+
+# IDE and Editor
+.vscode/
+!.vscode/extensions.json
+!.vscode/settings.json.example
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+.project
+.classpath
+.c9/
+*.launch
+.settings/
+*.sublime-workspace
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+lerna-debug.log*
+pnpm-debug.log*
+.npm/
+
+# Database
+*.sqlite
+*.sqlite3
+*.db
+prisma/migrations/dev/
+
+# Cache
+.cache/
+.parcel-cache/
+.eslintcache
+.stylelintcache
+.rpt2_cache/
+.rts2_cache_cjs/
+.rts2_cache_es/
+.rts2_cache_umd/
+
+# Temporary files
+tmp/
+temp/
+*.tmp
+*.temp
+.tmp/
+
+# OS files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+desktop.ini
+
+# Security
+*.pem
+*.key
+*.crt
+*.p12
+*.pfx
+private/
+secrets/
+credentials.json
+service-account.json
+
+# Docker
+docker-compose.override.yml
+.dockerignore.local
+
+# Terraform
+*.tfstate
+*.tfstate.*
+.terraform/
+.terraform.lock.hcl
+terraform.tfvars
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
+.terraformrc
+terraform.rc
+
+# AWS
+.aws/
+samconfig.toml
+
+# Python (for any Python scripts)
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# Backup files
+*.backup
+*.bak
+*.old
+backup/
+
+# Package files
+*.jar
+*.war
+*.nar
+*.ear
+*.zip
+*.tar.gz
+*.rar
+
+# Monitoring
+.datadog/
+.newrelic/
+
+# Documentation build
+docs/_build/
+docs/.vuepress/dist/
+site/
+
+# Misc
+.vercel
+.netlify
+.sst/
+.pulumi/
+storybook-static/
+
+# Project specific
+/packages/*/tsconfig.tsbuildinfo
+/apps/*/tsconfig.tsbuildinfo
+compliance-reports/
+audit-logs/
+uploads/
+exports/
+backups/
+
+# Lock files (keep these in version control)
+!package-lock.json
+!yarn.lock
+!pnpm-lock.yaml
