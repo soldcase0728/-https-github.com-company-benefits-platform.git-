@@ -1,0 +1,46 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "commonjs",
+    "lib": ["ES2022", "DOM", "DOM.Iterable"],
+    "jsx": "preserve",
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "resolveJsonModule": true,
+    "moduleResolution": "node",
+    "allowSyntheticDefaultImports": true,
+    "declaration": true,
+    "declarationMap": true,
+    "sourceMap": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": true,
+    "allowJs": true,
+    "incremental": true,
+    "baseUrl": ".",
+    "paths": {
+      "@benefits/shared/*": ["packages/shared/src/*"],
+      "@benefits/ui/*": ["packages/ui/src/*"],
+      "@benefits/database/*": ["packages/database/src/*"],
+      "@benefits/auth/*": ["packages/auth/src/*"],
+      "@benefits/document-ai/*": ["packages/document-ai/src/*"],
+      "@benefits/rules-engine/*": ["packages/rules-engine/src/*"],
+      "@benefits/carrier-middleware/*": ["packages/carrier-middleware/src/*"],
+      "@benefits/multi-tenant/*": ["packages/multi-tenant/src/*"],
+      "@benefits/observability/*": ["packages/observability/src/*"],
+      "@benefits/security/*": ["packages/security/src/*"]
+    }
+  },
+  "exclude": [
+    "node_modules",
+    "dist",
+    "build",
+    ".next",
+    "coverage",
+    "**/*.spec.ts",
+    "**/*.test.ts"
+  ]
+}
