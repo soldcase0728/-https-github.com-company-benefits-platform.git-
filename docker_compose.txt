@@ -1,0 +1,138 @@
+version: '3.9'
+
+services:
+  postgres:
+    image: postgres:15-alpine
+    container_name: benefits-postgres
+    environment:
+      POSTGRES_USER: ${DB_USER:-benefits}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-localpassword}
+      POSTGRES_DB: ${DB_NAME:-benefits_platform}
+      POSTGRES_MULTIPLE_DATABASES: benefits_platform,benefits_test,benefits_shadow
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./infrastructure/docker/init-scripts:/docker-entrypoint-initdb.d
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USER:-benefits}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - benefits-network
+
+  redis:
+    image: redis:7-alpine
+    container_name: benefits-redis
+    command: redis-server --appendonly yes --requirepass ${REDIS_PASSWORD:-localredis}
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - benefits-network
+
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.10.2
+    container_name: benefits-elasticsearch
+    environment:
+      - discovery.type=single-node
+      - xpack.security.enabled=false
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+    ports:
+      - "9200:9200"
+      - "9300:9300"
+    volumes:
+      - elasticsearch_data:/usr/share/elasticsearch/data
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:9200/_cluster/health || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+    networks:
+      - benefits-network
+
+  localstack:
+    image: localstack/localstack:latest
+    container_name: benefits-localstack
+    ports:
+      - "4566:4566"
+      - "4571:4571"
+    environment:
+      - SERVICES=s3,sqs,sns,lambda,dynamodb,secretsmanager,kms
+      - DEBUG=1
+      - DOCKER_HOST=unix:///var/run/docker.sock
+      - AWS_DEFAULT_REGION=us-east-1
+    volumes:
+      - localstack_data:/var/lib/localstack
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./infrastructure/docker/localstack:/docker-entrypoint-initaws.d
+    networks:
+      - benefits-network
+
+  minio:
+    image: minio/minio:latest
+    container_name: benefits-minio
+    command: server /data --console-address ":9001"
+    environment:
+      MINIO_ROOT_USER: ${MINIO_ROOT_USER:-minioadmin}
+      MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD:-minioadmin}
+      MINIO_DEFAULT_BUCKETS: documents,uploads,backups,exports
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    volumes:
+      - minio_data:/data
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9000/minio/health/live"]
+      interval: 30s
+      timeout: 20s
+      retries: 3
+    networks:
+      - benefits-network
+
+  rabbitmq:
+    image: rabbitmq:3-management-alpine
+    container_name: benefits-rabbitmq
+    environment:
+      RABBITMQ_DEFAULT_USER: ${RABBITMQ_USER:-benefits}
+      RABBITMQ_DEFAULT_PASS: ${RABBITMQ_PASS:-localrabbit}
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    volumes:
+      - rabbitmq_data:/var/lib/rabbitmq
+    healthcheck:
+      test: ["CMD", "rabbitmq-diagnostics", "ping"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+    networks:
+      - benefits-network
+
+  mailhog:
+    image: mailhog/mailhog:latest
+    container_name: benefits-mailhog
+    ports:
+      - "1025:1025"
+      - "8025:8025"
+    networks:
+      - benefits-network
+
+networks:
+  benefits-network:
+    driver: bridge
+
+volumes:
+  postgres_data:
+  redis_data:
+  elasticsearch_data:
+  localstack_data:
+  minio_data:
+  rabbitmq_data:
