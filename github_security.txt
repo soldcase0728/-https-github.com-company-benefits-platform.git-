@@ -1,0 +1,71 @@
+# Code Owners File - Defines who reviews what code
+# These owners will be automatically requested for review when someone opens a pull request
+
+# Global owners (for all files not matched below)
+* @platform-team-leads
+
+# Infrastructure and DevOps
+/infrastructure/ @devops-team @security-team
+/terraform/ @devops-team @security-team
+/.github/ @devops-team @platform-team-leads
+/docker-compose.yml @devops-team
+/Dockerfile* @devops-team
+*.dockerfile @devops-team
+
+# Security-sensitive files require security team review
+*.env* @security-team @platform-team-leads
+**/auth/ @security-team @backend-team
+**/security/ @security-team
+/packages/security/ @security-team
+/packages/auth/ @security-team @backend-team
+*.pem @security-team
+*.key @security-team
+*.cert @security-team
+*.crt @security-team
+
+# Database changes need backend team review
+/packages/database/ @backend-team @database-team
+*.prisma @backend-team @database-team
+**/migrations/ @database-team @backend-team
+
+# API Gateway and microservices
+/apps/api-gateway/ @backend-team @platform-team-leads
+/apps/*-service/ @backend-team
+
+# Frontend applications
+/apps/employee-portal/ @frontend-team
+/apps/admin-dashboard/ @frontend-team
+/packages/ui/ @frontend-team @design-team
+
+# Shared packages
+/packages/shared/ @platform-team-leads @backend-team @frontend-team
+/packages/multi-tenant/ @backend-team @security-team
+/packages/observability/ @devops-team @backend-team
+
+# AI and ML components
+/packages/document-ai/ @ml-team @backend-team
+/packages/rules-engine/ @backend-team @business-team
+
+# Carrier integrations
+/packages/carrier-middleware/ @integration-team @backend-team
+
+# Documentation
+*.md @documentation-team
+/docs/ @documentation-team @platform-team-leads
+README.md @platform-team-leads
+
+# Configuration files
+package.json @platform-team-leads
+turbo.json @platform-team-leads @devops-team
+tsconfig*.json @platform-team-leads
+.eslintrc* @platform-team-leads
+.prettierrc* @platform-team-leads
+
+# Compliance and legal
+/compliance/ @compliance-team @security-team @legal-team
+**/hipaa/ @compliance-team @security-team
+**/audit/ @compliance-team @security-team
+
+# CI/CD workflows - requires multiple reviews
+/.github/workflows/deploy.yml @devops-team @security-team @platform-team-leads
+/.github/workflows/ci.yml @devops-team @platform-team-leads

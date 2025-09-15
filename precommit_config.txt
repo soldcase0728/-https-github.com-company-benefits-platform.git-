@@ -1,0 +1,150 @@
+# Pre-commit hooks to prevent security issues before code reaches GitHub
+# Install: pip install pre-commit && pre-commit install
+
+repos:
+  # Security - Detect secrets and credentials
+  - repo: https://github.com/Yelp/detect-secrets
+    rev: v1.4.0
+    hooks:
+      - id: detect-secrets
+        args: ['--baseline', '.secrets.baseline']
+        exclude: package-lock.json
+
+  # Security - GitHub token detection
+  - repo: https://github.com/trufflesecurity/trufflehog
+    rev: v3.63.0
+    hooks:
+      - id: trufflehog
+        entry: trufflehog filesystem --json --fail --no-update
+        language: golang
+        pass_filenames: false
+
+  # Security - Detect private keys
+  - repo: local
+    hooks:
+      - id: detect-private-key
+        name: Detect Private Keys
+        entry: sh -c 'if git diff --cached --name-only | xargs grep -E "BEGIN (RSA|DSA|EC|OPENSSH) PRIVATE KEY" 2>/dev/null; then echo "Private key detected!"; exit 1; fi'
+        language: system
+        pass_filenames: false
+
+  # Prevent large files
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.5.0
+    hooks:
+      - id: check-added-large-files
+        args: ['--maxkb=1000']
+      - id: check-json
+      - id: check-yaml
+      - id: check-xml
+      - id: check-toml
+      - id: check-merge-conflict
+      - id: check-case-conflict
+      - id: detect-aws-credentials
+        args: ['--allow-missing-credentials']
+      - id: mixed-line-ending
+        args: ['--fix=lf']
+      - id: trailing-whitespace
+      - id: end-of-file-fixer
+      - id: no-commit-to-branch
+        args: ['--branch', 'main', '--branch', 'production']
+
+  # TypeScript/JavaScript linting
+  - repo: local
+    hooks:
+      - id: eslint
+        name: ESLint
+        entry: npx eslint
+        language: system
+        files: \.(js|jsx|ts|tsx)$
+        pass_filenames: true
+
+  # Prettier formatting
+  - repo: local
+    hooks:
+      - id: prettier
+        name: Prettier
+        entry: npx prettier --check
+        language: system
+        files: \.(js|jsx|ts|tsx|json|md|yml|yaml)$
+
+  # Security - Check for PII patterns
+  - repo: local
+    hooks:
+      - id: check-pii
+        name: Check for PII
+        entry: sh -c 'if git diff --cached --name-only | xargs grep -E "[0-9]{3}-[0-9]{2}-[0-9]{4}|[0-9]{3}[-.●]?[0-9]{2}[-.●]?[0-9]{4}" 2>/dev/null; then echo "Potential SSN detected!"; exit 1; fi'
+        language: system
+        pass_filenames: false
+        exclude: ^(.*test.*|.*spec.*|.*\.md)$
+
+  # Check for console.log statements
+  - repo: local
+    hooks:
+      - id: no-console-log
+        name: No console.log
+        entry: sh -c 'if git diff --cached --name-only "*.ts" "*.tsx" "*.js" "*.jsx" | xargs grep -E "console\.(log|debug|info)" 2>/dev/null | grep -v "// eslint-disable"; then echo "console.log detected!"; exit 1; fi'
+        language: system
+        pass_filenames: false
+
+  # Dockerfile linting
+  - repo: https://github.com/hadolint/hadolint
+    rev: v2.12.0
+    hooks:
+      - id: hadolint-docker
+        args: ['--ignore', 'DL3008', '--ignore', 'DL3009']
+
+  # Terraform formatting and validation
+  - repo: https://github.com/antonbabenko/pre-commit-terraform
+    rev: v1.83.5
+    hooks:
+      - id: terraform_fmt
+      - id: terraform_validate
+      - id: terraform_tflint
+      - id: terraform_tfsec
+
+  # Commit message formatting
+  - repo: https://github.com/commitizen-tools/commitizen
+    rev: v3.13.0
+    hooks:
+      - id: commitizen
+        stages: [commit-msg]
+
+# Additional custom hooks
+  - repo: local
+    hooks:
+      # Check for .env files
+      - id: no-env-files
+        name: Block .env files
+        entry: sh -c 'if git diff --cached --name-only | grep -E "^\.env$|^\.env\." | grep -v "\.example$"; then echo ".env file detected! Use .env.example instead"; exit 1; fi'
+        language: system
+        pass_filenames: false
+
+      # Check package.json for sensitive scripts
+      - id: check-package-json
+        name: Check package.json
+        entry: sh -c 'if git diff --cached --name-only | grep "package.json" | xargs grep -E "rm -rf /" 2>/dev/null; then echo "Dangerous command in package.json!"; exit 1; fi'
+        language: system
+        pass_filenames: false
+
+      # Validate Prisma schema
+      - id: prisma-validate
+        name: Validate Prisma Schema
+        entry: sh -c 'if git diff --cached --name-only | grep "schema.prisma"; then cd packages/database && npx prisma validate; fi'
+        language: system
+        pass_filenames: false
+
+default_stages: [commit]
+fail_fast: false
+exclude: |
+  (?x)^(
+    .*/vendor/.*|
+    .*/node_modules/.*|
+    .*/dist/.*|
+    .*/build/.*|
+    .*\.min\.js|
+    .*\.min\.css|
+    package-lock\.json|
+    yarn\.lock|
+    pnpm-lock\.yaml
+  )$
