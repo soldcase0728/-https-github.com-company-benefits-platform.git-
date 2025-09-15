@@ -1,0 +1,682 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../node_modules/.prisma/client"
+  previewFeatures = ["multiSchema", "postgresqlExtensions"]
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+  schemas  = ["public", "tenant"]
+  extensions = [uuid_ossp(map: "uuid-ossp"), pgcrypto]
+}
+
+// ==================== TENANT MANAGEMENT ====================
+
+model Tenant {
+  id                String   @id @default(dbgenerated("gen_random_uuid()"))
+  name              String
+  slug              String   @unique
+  domain            String?  @unique
+  status            TenantStatus @default(ACTIVE)
+  settings          Json     @default("{}")
+  features          Json     @default("{}")
+  billingInfo       Json?
+  customBranding    Json?
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+  
+  // Relations
+  organizations     Organization[]
+  users            User[]
+  plans            Plan[]
+  enrollments      Enrollment[]
+  auditLogs        AuditLog[]
+  
+  @@schema("public")
+  @@index([status])
+  @@index([slug])
+}
+
+enum TenantStatus {
+  ACTIVE
+  INACTIVE
+  SUSPENDED
+  TRIAL
+  @@schema("public")
+}
+
+// ==================== USER & AUTH ====================
+
+model User {
+  id                String   @id @default(dbgenerated("gen_random_uuid()"))
+  tenantId          String
+  email             String
+  emailVerified     Boolean  @default(false)
+  passwordHash      String?
+  firstName         String
+  lastName          String
+  middleName        String?
+  dateOfBirth       DateTime?
+  ssn               String?  // Encrypted
+  phone             String?
+  avatar            String?
+  role              UserRole @default(EMPLOYEE)
+  status            UserStatus @default(ACTIVE)
+  metadata          Json     @default("{}")
+  lastLoginAt       DateTime?
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+  
+  // Relations
+  tenant            Tenant   @relation(fields: [tenantId], references: [id])
+  employee          Employee?
+  sessions          Session[]
+  auditLogs         AuditLog[]
+  notifications     Notification[]
+  
+  @@unique([tenantId, email])
+  @@schema("tenant")
+  @@index([email])
+  @@index([tenantId])
+}
+
+enum UserRole {
+  SUPER_ADMIN
+  ADMIN
+  HR_MANAGER
+  HR_STAFF
+  EMPLOYEE
+  DEPENDENT
+  @@schema("tenant")
+}
+
+enum UserStatus {
+  ACTIVE
+  INACTIVE
+  SUSPENDED
+  PENDING
+  @@schema("tenant")
+}
+
+model Session {
+  id                String   @id @default(dbgenerated("gen_random_uuid()"))
+  userId            String
+  token             String   @unique
+  refreshToken      String?  @unique
+  userAgent         String?
+  ipAddress         String?
+  expiresAt         DateTime
+  createdAt         DateTime @default(now())
+  
+  // Relations
+  user              User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  @@schema("tenant")
+  @@index([token])
+  @@index([userId])
+}
+
+// ==================== ORGANIZATION & EMPLOYEE ====================
+
+model Organization {
+  id                String   @id @default(dbgenerated("gen_random_uuid()"))
+  tenantId          String
+  name              String
+  ein               String?  // Employer Identification Number
+  address           Json
+  phone             String
+  email             String
+  website           String?
+  industry          String?
+  size              String?
+  settings          Json     @default("{}")
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+  
+  // Relations
+  tenant            Tenant   @relation(fields: [tenantId], references: [id])
+  employees         Employee[]
+  departments       Department[]
+  locations         Location[]
+  plans             Plan[]
+  
+  @@unique([tenantId, ein])
+  @@schema("tenant")
+  @@index([tenantId])
+}
+
+model Department {
+  id                String   @id @default(dbgenerated("gen_random_uuid()"))
+  organizationId    String
+  name              String
+  code              String
+  description       String?
+  parentId          String?
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+  
+  // Relations
+  organization      Organization @relation(fields: [organizationId], references: [id])
+  parent            Department?  @relation("DepartmentHierarchy", fields: [parentId], references: [id])
+  children          Department[] @relation("DepartmentHierarchy")
+  employees         Employee[]
+  
+  @@unique([organizationId, code])
+  @@schema("tenant")
+}
+
+model Location {
+  id                String   @id @default(dbgenerated("gen_random_uuid()"))
+  organizationId    String
+  name              String
+  address           Json
+  timezone          String
+  isHeadquarters    Boolean  @default(false)
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+  
+  // Relations
+  organization      Organization @relation(fields: [organizationId], references: [id])
+  employees         Employee[]
+  
+  @@schema("tenant")
+}
+
+model Employee {
+  id                String   @id @default(dbgenerated("gen_random_uuid()"))
+  userId            String   @unique
+  organizationId    String
+  employeeNumber    String
+  departmentId      String?
+  locationId        String?
+  jobTitle          String
+  employmentType    EmploymentType
+  employmentStatus  EmploymentStatus
+  hireDate          DateTime
+  terminationDate   DateTime?
+  salary            Decimal? @db.Decimal(12, 2)
+  payFrequency      PayFrequency?
+  hoursPerWeek      Int      @default(40)
+  eligibilityDate   DateTime?
+  metadata          Json     @default("{}")
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+  
+  // Relations
+  user              User     @relation(fields: [userId], references: [id])
+  organization      Organization @relation(fields: [organizationId], references: [id])
+  department        Department? @relation(fields: [departmentId], references: [id])
+  location          Location? @relation(fields: [locationId], references: [id])
+  dependents        Dependent[]
+  enrollments       Enrollment[]
+  beneficiaries     Beneficiary[]
+  lifeEvents        LifeEvent[]
+  
+  @@unique([organizationId, employeeNumber])
+  @@schema("tenant")
+  @@index([organizationId])
+  @@index([userId])
+}
+
+enum EmploymentType {
+  FULL_TIME
+  PART_TIME
+  CONTRACT
+  TEMPORARY
+  INTERN
+  @@schema("tenant")
+}
+
+enum EmploymentStatus {
+  ACTIVE
+  ON_LEAVE
+  TERMINATED
+  RETIRED
+  @@schema("tenant")
+}
+
+enum PayFrequency {
+  WEEKLY
+  BI_WEEKLY
+  SEMI_MONTHLY
+  MONTHLY
+  @@schema("tenant")
+}
+
+// ==================== DEPENDENTS & BENEFICIARIES ====================
+
+model Dependent {
+  id                String   @id @default(dbgenerated("gen_random_uuid()"))
+  employeeId        String
+  firstName         String
+  lastName          String
+  middleName        String?
+  relationship      DependentRelationship
+  dateOfBirth       DateTime
+  ssn               String?  // Encrypted
+  gender            Gender?
+  isDisabled        Boolean  @default(false)
+  isStudent         Boolean  @default(false)
+  metadata          Json     @default("{}")
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+  
+  // Relations
+  employee          Employee @relation(fields: [employeeId], references: [id])
+  enrollments       EnrollmentDependent[]
+  
+  @@schema("tenant")
+  @@index([employeeId])
+}
+
+enum DependentRelationship {
+  SPOUSE
+  DOMESTIC_PARTNER
+  CHILD
+  STEP_CHILD
+  FOSTER_CHILD
+  OTHER
+  @@schema("tenant")
+}
+
+enum Gender {
+  MALE
+  FEMALE
+  OTHER
+  PREFER_NOT_TO_SAY
+  @@schema("tenant")
+}
+
+model Beneficiary {
+  id                String   @id @default(dbgenerated("gen_random_uuid()"))
+  employeeId        String
+  enrollmentId      String
+  firstName         String
+  lastName          String
+  relationship      String
+  percentage        Int
+  isPrimary         Boolean  @default(false)
+  isContingent      Boolean  @default(false)
+  address           Json?
+  phone             String?
+  email             String?
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+  
+  // Relations
+  employee          Employee @relation(fields: [employeeId], references: [id])
+  enrollment        Enrollment @relation(fields: [enrollmentId], references: [id])
+  
+  @@schema("tenant")
+  @@index([employeeId])
+  @@index([enrollmentId])
+}
+
+// ==================== BENEFITS & PLANS ====================
+
+model Plan {
+  id                String   @id @default(dbgenerated("gen_random_uuid()"))
+  tenantId          String
+  organizationId    String
+  carrierId         String
+  externalPlanId    String?
+  name              String
+  displayName       String
+  type              PlanType
+  category          PlanCategory
+  description       String?
+  summary           Json?
+  benefits          Json     // Detailed benefit structure
+  costs             Json     // Cost breakdown
+  eligibilityRules  Json     // Eligibility criteria
+  enrollmentRules   Json     // Enrollment rules
+  effectiveDate     DateTime
+  terminationDate   DateTime?
+  isActive          Boolean  @default(true)
+  metadata          Json     @default("{}")
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+  
+  // Relations
+  tenant            Tenant   @relation(fields: [tenantId], references: [id])
+  organization      Organization @relation(fields: [organizationId], references: [id])
+  carrier           Carrier  @relation(fields: [carrierId], references: [id])
+  enrollments       Enrollment[]
+  documents         Document[]
+  
+  @@unique([organizationId, externalPlanId])
+  @@schema("tenant")
+  @@index([tenantId])
+  @@index([organizationId])
+  @@index([type, category])
+}
+
+enum PlanType {
+  MEDICAL
+  DENTAL
+  VISION
+  LIFE
+  DISABILITY
+  FSA
+  HSA
+  HRA
+  RETIREMENT
+  OTHER
+  @@schema("tenant")
+}
+
+enum PlanCategory {
+  PPO
+  HMO
+  EPO
+  POS
+  HDHP
+  BASIC
+  ENHANCED
+  PREMIUM
+  @@schema("tenant")
+}
+
+model Carrier {
+  id                String   @id @default(dbgenerated("gen_random_uuid()"))
+  name              String
+  displayName       String
+  logo              String?
+  website           String?
+  supportPhone      String?
+  supportEmail      String?
+  apiEndpoint       String?
+  apiCredentials    Json?    // Encrypted
+  integrationConfig Json     @default("{}")
+  isActive          Boolean  @default(true)
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+  
+  // Relations
+  plans             Plan[]
+  enrollments       Enrollment[]
+  
+  @@schema("public")
+}
+
+// ==================== ENROLLMENT ====================
+
+model Enrollment {
+  id                String   @id @default(dbgenerated("gen_random_uuid()"))
+  tenantId          String
+  employeeId        String
+  planId            String
+  carrierId         String
+  enrollmentNumber  String?
+  status            EnrollmentStatus
+  effectiveDate     DateTime
+  terminationDate   DateTime?
+  monthlyPremium    Decimal  @db.Decimal(10, 2)
+  employeeContribution Decimal @db.Decimal(10, 2)
+  employerContribution Decimal @db.Decimal(10, 2)
+  coverageLevel     CoverageLevel
+  enrollmentMethod  EnrollmentMethod
+  signatureDate     DateTime?
+  confirmationNumber String?
+  metadata          Json     @default("{}")
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+  
+  // Relations
+  tenant            Tenant   @relation(fields: [tenantId], references: [id])
+  employee          Employee @relation(fields: [employeeId], references: [id])
+  plan              Plan     @relation(fields: [planId], references: [id])
+  carrier           Carrier  @relation(fields: [carrierId], references: [id])
+  dependents        EnrollmentDependent[]
+  beneficiaries     Beneficiary[]
+  documents         Document[]
+  statusHistory     EnrollmentStatusHistory[]
+  
+  @@unique([employeeId, planId, effectiveDate])
+  @@schema("tenant")
+  @@index([tenantId])
+  @@index([employeeId])
+  @@index([status])
+}
+
+enum EnrollmentStatus {
+  PENDING
+  ACTIVE
+  TERMINATED
+  CANCELLED
+  SUSPENDED
+  @@schema("tenant")
+}
+
+enum CoverageLevel {
+  EMPLOYEE_ONLY
+  EMPLOYEE_SPOUSE
+  EMPLOYEE_CHILDREN
+  FAMILY
+  @@schema("tenant")
+}
+
+enum EnrollmentMethod {
+  ONLINE
+  PAPER
+  PHONE
+  IN_PERSON
+  AUTO_ENROLLED
+  @@schema("tenant")
+}
+
+model EnrollmentDependent {
+  id                String   @id @default(dbgenerated("gen_random_uuid()"))
+  enrollmentId      String
+  dependentId       String
+  effectiveDate     DateTime
+  terminationDate   DateTime?
+  createdAt         DateTime @default(now())
+  
+  // Relations
+  enrollment        Enrollment @relation(fields: [enrollmentId], references: [id])
+  dependent         Dependent @relation(fields: [dependentId], references: [id])
+  
+  @@unique([enrollmentId, dependentId])
+  @@schema("tenant")
+}
+
+model EnrollmentStatusHistory {
+  id                String   @id @default(dbgenerated("gen_random_uuid()"))
+  enrollmentId      String
+  previousStatus    EnrollmentStatus
+  newStatus         EnrollmentStatus
+  reason            String?
+  changedBy         String
+  changedAt         DateTime @default(now())
+  
+  // Relations
+  enrollment        Enrollment @relation(fields: [enrollmentId], references: [id])
+  
+  @@schema("tenant")
+  @@index([enrollmentId])
+}
+
+// ==================== LIFE EVENTS ====================
+
+model LifeEvent {
+  id                String   @id @default(dbgenerated("gen_random_uuid()"))
+  employeeId        String
+  type              LifeEventType
+  eventDate         DateTime
+  documentedDate    DateTime @default(now())
+  description       String?
+  impactedPlans     Json     @default("[]")
+  status            LifeEventStatus
+  metadata          Json     @default("{}")
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+  
+  // Relations
+  employee          Employee @relation(fields: [employeeId], references: [id])
+  documents         Document[]
+  
+  @@schema("tenant")
+  @@index([employeeId])
+  @@index([type])
+}
+
+enum LifeEventType {
+  MARRIAGE
+  DIVORCE
+  BIRTH
+  ADOPTION
+  DEATH
+  LOSS_OF_COVERAGE
+  GAIN_OF_COVERAGE
+  MOVED
+  OTHER
+  @@schema("tenant")
+}
+
+enum LifeEventStatus {
+  PENDING_DOCUMENTATION
+  DOCUMENTED
+  PROCESSED
+  REJECTED
+  @@schema("tenant")
+}
+
+// ==================== DOCUMENTS ====================
+
+model Document {
+  id                String   @id @default(dbgenerated("gen_random_uuid()"))
+  type              DocumentType
+  category          String
+  fileName          String
+  fileSize          Int
+  mimeType          String
+  storageKey        String   // S3 key
+  checksum          String
+  encryptionKey     String?  // For encrypted documents
+  extractedData     Json?    // AI extracted data
+  ocrText           String?  // OCR extracted text
+  status            DocumentStatus
+  uploadedBy        String
+  verifiedBy        String?
+  verifiedAt        DateTime?
+  metadata          Json     @default("{}")
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+  
+  // Relations
+  enrollmentId      String?
+  enrollment        Enrollment? @relation(fields: [enrollmentId], references: [id])
+  planId            String?
+  plan              Plan?    @relation(fields: [planId], references: [id])
+  lifeEventId       String?
+  lifeEvent         LifeEvent? @relation(fields: [lifeEventId], references: [id])
+  
+  @@schema("tenant")
+  @@index([type])
+  @@index([status])
+  @@index([enrollmentId])
+}
+
+enum DocumentType {
+  ENROLLMENT_FORM
+  ID_CARD
+  EOB
+  BIRTH_CERTIFICATE
+  MARRIAGE_CERTIFICATE
+  DIVORCE_DECREE
+  DEATH_CERTIFICATE
+  DEPENDENT_VERIFICATION
+  OTHER
+  @@schema("tenant")
+}
+
+enum DocumentStatus {
+  PENDING
+  PROCESSING
+  VERIFIED
+  REJECTED
+  ARCHIVED
+  @@schema("tenant")
+}
+
+// ==================== NOTIFICATIONS ====================
+
+model Notification {
+  id                String   @id @default(dbgenerated("gen_random_uuid()"))
+  userId            String
+  type              NotificationType
+  channel           NotificationChannel
+  subject           String
+  content           String
+  metadata          Json     @default("{}")
+  status            NotificationStatus
+  sentAt            DateTime?
+  readAt            DateTime?
+  error             String?
+  createdAt         DateTime @default(now())
+  
+  // Relations
+  user              User     @relation(fields: [userId], references: [id])
+  
+  @@schema("tenant")
+  @@index([userId])
+  @@index([status])
+  @@index([type])
+}
+
+enum NotificationType {
+  ENROLLMENT_REMINDER
+  ENROLLMENT_CONFIRMATION
+  DOCUMENT_REQUEST
+  PLAN_CHANGE
+  LIFE_EVENT
+  DEADLINE
+  SYSTEM
+  @@schema("tenant")
+}
+
+enum NotificationChannel {
+  EMAIL
+  SMS
+  IN_APP
+  PUSH
+  @@schema("tenant")
+}
+
+enum NotificationStatus {
+  PENDING
+  SENT
+  DELIVERED
+  READ
+  FAILED
+  @@schema("tenant")
+}
+
+// ==================== AUDIT & COMPLIANCE ====================
+
+model AuditLog {
+  id                String   @id @default(dbgenerated("gen_random_uuid()"))
+  tenantId          String
+  userId            String?
+  action            String
+  entity            String
+  entityId          String?
+  oldValues         Json?
+  newValues         Json?
+  ipAddress         String?
+  userAgent         String?
+  metadata          Json     @default("{}")
+  createdAt         DateTime @default(now())
+  
+  // Relations
+  tenant            Tenant   @relation(fields: [tenantId], references: [id])
+  user              User?    @relation(fields: [userId], references: [id])
+  
+  @@schema("public")
+  @@index([tenantId])
+  @@index([userId])
+  @@index([entity, entityId])
+  @@index([createdAt])
+}
