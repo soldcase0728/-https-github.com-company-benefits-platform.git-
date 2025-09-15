@@ -1,0 +1,68 @@
+{
+  "$schema": "https://turbo.build/schema.json",
+  "globalDependencies": ["**/.env.*local"],
+  "pipeline": {
+    "build": {
+      "dependsOn": ["^build"],
+      "outputs": ["dist/**", ".next/**", "build/**"],
+      "env": [
+        "NODE_ENV",
+        "NEXT_PUBLIC_API_URL",
+        "NEXT_PUBLIC_AUTH_URL",
+        "DATABASE_URL"
+      ]
+    },
+    "dev": {
+      "cache": false,
+      "persistent": true,
+      "dependsOn": ["^build"]
+    },
+    "test": {
+      "dependsOn": ["build"],
+      "outputs": ["coverage/**"],
+      "env": ["NODE_ENV"]
+    },
+    "test:e2e": {
+      "dependsOn": ["build"],
+      "env": ["NODE_ENV", "TEST_ENV"]
+    },
+    "lint": {
+      "outputs": []
+    },
+    "type-check": {
+      "dependsOn": ["^build"],
+      "outputs": []
+    },
+    "db:migrate": {
+      "cache": false,
+      "env": ["DATABASE_URL", "NODE_ENV"]
+    },
+    "db:seed": {
+      "cache": false,
+      "dependsOn": ["db:migrate"],
+      "env": ["DATABASE_URL", "NODE_ENV"]
+    },
+    "db:reset": {
+      "cache": false,
+      "env": ["DATABASE_URL", "NODE_ENV"]
+    },
+    "compliance:check": {
+      "outputs": ["compliance-reports/**"],
+      "env": ["COMPLIANCE_MODE"]
+    },
+    "generate:types": {
+      "outputs": ["types/**", "*.d.ts"]
+    },
+    "backup:db": {
+      "cache": false,
+      "env": ["DATABASE_URL", "BACKUP_BUCKET"]
+    },
+    "monitor": {
+      "cache": false,
+      "persistent": true
+    },
+    "clean": {
+      "cache": false
+    }
+  }
+}
