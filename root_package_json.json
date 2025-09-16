@@ -1,0 +1,62 @@
+{
+  "name": "benefits-platform",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Multi-tenant benefits platform with AI-powered enrollment and zero-touch plan setup",
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "dev": "turbo run dev",
+    "build": "turbo run build",
+    "test": "turbo run test",
+    "test:e2e": "turbo run test:e2e",
+    "lint": "turbo run lint",
+    "type-check": "turbo run type-check",
+    "db:migrate": "turbo run db:migrate",
+    "db:seed": "turbo run db:seed",
+    "db:reset": "turbo run db:reset",
+    "security:scan": "npm audit && snyk test",
+    "compliance:check": "turbo run compliance:check",
+    "start:local": "docker-compose up -d && turbo run dev",
+    "deploy:dev": "turbo run build && npm run deploy:infrastructure:dev",
+    "deploy:staging": "turbo run build && npm run deploy:infrastructure:staging",
+    "deploy:prod": "turbo run build && npm run deploy:infrastructure:prod",
+    "clean": "turbo run clean && rm -rf node_modules",
+    "format": "prettier --write \"**/*.{ts,tsx,js,jsx,json,md}\"",
+    "generate:types": "turbo run generate:types",
+    "backup:db": "turbo run backup:db",
+    "monitor": "turbo run monitor"
+  },
+  "devDependencies": {
+    "turbo": "^1.10.12",
+    "@types/node": "^20.8.0",
+    "typescript": "^5.2.2",
+    "eslint": "^8.51.0",
+    "prettier": "^3.0.3",
+    "@commitlint/cli": "^17.7.1",
+    "@commitlint/config-conventional": "^17.7.0",
+    "husky": "^8.0.3",
+    "lint-staged": "^15.0.1",
+    "concurrently": "^8.2.2"
+  },
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=9.0.0"
+  },
+  "keywords": [
+    "benefits",
+    "healthcare",
+    "ai",
+    "multi-tenant",
+    "hipaa",
+    "enrollment"
+  ],
+  "author": "Benefits Platform Team",
+  "license": "PROPRIETARY",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/company/benefits-platform.git"
+  }
+}
