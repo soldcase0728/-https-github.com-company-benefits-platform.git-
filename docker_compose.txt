@@ -125,6 +125,16 @@ services:
     networks:
       - benefits-network
 
+  compliance-svc:
+    image: compliance-svc:latest
+    environment:
+      ENCRYPTION_AT_REST: "true"
+      AUDIT_LOGGING: "true"
+      PHI_REDACTION: "true"
+      SESSION_TIMEOUT: "15m"
+    networks:
+      - benefits-network
+
 networks:
   benefits-network:
     driver: bridge
