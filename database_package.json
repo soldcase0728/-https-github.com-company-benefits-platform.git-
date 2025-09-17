@@ -45,8 +45,5 @@
   "prisma": {
     "seed": "tsx src/seeds/index.ts"
   },
-  "files": [
-    "dist",
-    "prisma"
-  ]
+  "files": ["dist", "prisma"]
 }
