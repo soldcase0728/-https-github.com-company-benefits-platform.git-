@@ -1,68 +1,88 @@
-// =============================
-// Prisma Schema for Benefits Platform (HIPAA/PII/PHI compliant)
-// Fields marked with @encrypted require field-level encryption
-// =============================
-
 generator client {
-	provider = "prisma-client-js"
+  provider = "prisma-client-js"
 }
 
 datasource db {
-	provider = "postgresql"
-	url      = env("DATABASE_URL")
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
 }
 
 model Employee {
-	id            String   @id @default(uuid())
-	firstName     String
-	lastName      String
-	email         String   @unique
-	ssn           String   // @encrypted (PII)
-	dob           DateTime // @encrypted (PII)
-	address       String   // @encrypted (PII)
-	phone         String   // @encrypted (PII)
-	dependents    Dependent[]
-	enrollments   Enrollment[]
-	createdAt     DateTime @default(now())
-	updatedAt     DateTime @updatedAt
+  id                String    @id @default(cuid())
+  email             String    @unique
+  firstName         String
+  lastName          String
+  ssn               String?   @db.Text
+  dateOfBirth       String?   @db.Text
+  phone             String?
+  employeeNumber    String    @unique
+  department        String?
+  hireDate          DateTime
+  
+  dependents        Dependent[]
+  enrollments       Enrollment[]
+  auditLogs         AuditLog[]
+  
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
 }
 
 model Dependent {
-	id         String   @id @default(uuid())
-	employee   Employee @relation(fields: [employeeId], references: [id])
-	employeeId String
-	firstName  String
-	lastName   String
-	dob        DateTime // @encrypted (PII)
-	relationship String
-	ssn        String   // @encrypted (PII)
-	createdAt  DateTime @default(now())
-	updatedAt  DateTime @updatedAt
+  id           String    @id @default(cuid())
+  employeeId   String
+  employee     Employee  @relation(fields: [employeeId], references: [id])
+  firstName    String
+  lastName     String
+  ssn          String?   @db.Text
+  dateOfBirth  String    @db.Text
+  relationship String
+  
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
 }
 
 model Plan {
-	id          String   @id @default(uuid())
-	name        String
-	type        String
-	tier        String
-	description String
-	enrollments Enrollment[]
-	createdAt   DateTime @default(now())
-	updatedAt   DateTime @updatedAt
+  id            String   @id @default(cuid())
+  name          String
+  type          String   // MEDICAL, DENTAL, VISION
+  tier          String   // BRONZE, SILVER, GOLD
+  monthlyPremium Float
+  deductible    Float
+  maxOutOfPocket Float
+  
+  enrollments   Enrollment[]
+  
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
 }
 
 model Enrollment {
-	id           String   @id @default(uuid())
-	employee     Employee @relation(fields: [employeeId], references: [id])
-	employeeId   String
-	plan         Plan     @relation(fields: [planId], references: [id])
-	planId       String
-	coverage     String
-	status       String
-	confirmation String   // @encrypted (PHI)
-	submittedAt  DateTime
-	createdAt    DateTime @default(now())
-	updatedAt    DateTime @updatedAt
+  id           String   @id @default(cuid())
+  employeeId   String
+  employee     Employee @relation(fields: [employeeId], references: [id])
+  planId       String
+  plan         Plan     @relation(fields: [planId], references: [id])
+  
+  effectiveDate DateTime
+  status       String   // ACTIVE, PENDING, TERMINATED
+  
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  
+  @@unique([employeeId, planId])
 }
 
-// Add more models as needed (e.g., Claims, AuditLog, etc.)
+model AuditLog {
+  id           String   @id @default(cuid())
+  userId       String?
+  action       String
+  resourceType String
+  resourceId   String
+  ipAddress    String?
+  userAgent    String?
+  metadata     Json?
+  
+  employee     Employee? @relation(fields: [userId], references: [id])
+  
+  createdAt    DateTime @default(now())
+}

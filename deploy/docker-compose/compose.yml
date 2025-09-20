@@ -1,0 +1,117 @@
+version: '3.9'
+
+services:
+  # Infrastructure Services
+  postgres:
+    image: postgres:15-alpine
+    container_name: benefits-postgres
+    environment:
+      POSTGRES_USER: ${DB_USER:-benefits}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-localpassword}
+      POSTGRES_DB: ${DB_NAME:-benefits_platform}
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USER:-benefits}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - benefits-network
+
+  redis:
+    image: redis:7-alpine
+    container_name: benefits-redis
+    command: redis-server --appendonly yes --requirepass ${REDIS_PASSWORD:-localredis}
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "--no-auth-warning", "-a", "${REDIS_PASSWORD:-localredis}", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - benefits-network
+
+  # API Gateway
+  api-gateway:
+    build:
+      context: ../../services/api-gateway
+      dockerfile: Dockerfile
+    container_name: benefits-api-gateway
+    ports:
+      - "4000:4000"
+    environment:
+      - NODE_ENV=development
+      - PORT=4000
+      - DATABASE_URL=postgresql://benefits:localpassword@postgres:5432/benefits_platform
+      - REDIS_URL=redis://:localredis@redis:6379
+      - API_RATE_LIMIT=100
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    networks:
+      - benefits-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:4000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # Employee Portal
+  web-employee:
+    build:
+      context: ../../apps/web-employee
+      dockerfile: Dockerfile
+    container_name: benefits-web-employee
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=development
+      - NEXT_PUBLIC_API_URL=http://localhost:4000
+    depends_on:
+      api-gateway:
+        condition: service_healthy
+    networks:
+      - benefits-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # Admin Dashboard
+  web-admin:
+    build:
+      context: ../../apps/web-admin
+      dockerfile: Dockerfile
+    container_name: benefits-web-admin
+    ports:
+      - "3001:3001"
+    environment:
+      - NODE_ENV=development
+      - NEXT_PUBLIC_API_URL=http://localhost:4000
+    depends_on:
+      api-gateway:
+        condition: service_healthy
+    networks:
+      - benefits-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3001"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+networks:
+  benefits-network:
+    driver: bridge
+
+volumes:
+  postgres_data:
+  redis_data:

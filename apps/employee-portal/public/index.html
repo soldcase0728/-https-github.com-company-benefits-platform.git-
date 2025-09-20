@@ -1,0 +1,1602 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="description" content="AI-powered benefits platform with zero-touch setup and seamless carrier integration">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <title>BenefitFlow - Next-Generation Benefits Platform</title>
+    
+    <style>
+        /* ============ CSS Reset & Variables ============ */
+        :root {
+            --primary: #0071e3;
+            --primary-dark: #0051a2;
+            --secondary: #5e5ce6;
+            --success: #30d158;
+            --text-primary: #1d1d1f;
+            --text-secondary: #86868b;
+            --bg-primary: #fbfbfd;
+            --bg-secondary: #f5f5f7;
+            --white: #ffffff;
+            --shadow-sm: 0 2px 8px rgba(0,0,0,0.04);
+            --shadow-md: 0 4px 16px rgba(0,0,0,0.08);
+            --shadow-lg: 0 12px 40px rgba(0,0,0,0.12);
+            --border-radius: 18px;
+            --max-width: 1200px;
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* ============ Base Styles ============ */
+        html {
+            scroll-behavior: smooth;
+            -webkit-text-size-adjust: 100%;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 
+                         'Helvetica Neue', Helvetica, Arial, sans-serif;
+            font-size: 17px;
+            line-height: 1.47059;
+            font-weight: 400;
+            letter-spacing: -0.022em;
+            color: var(--text-primary);
+            background: var(--bg-primary);
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        /* ============ Typography ============ */
+        h1 {
+            font-size: clamp(48px, 8vw, 80px);
+            line-height: 1.0625;
+            font-weight: 700;
+            letter-spacing: -0.003em;
+        }
+
+        h2 {
+            font-size: clamp(32px, 5vw, 48px);
+            line-height: 1.125;
+            font-weight: 600;
+            letter-spacing: 0;
+        }
+
+        h3 {
+            font-size: 28px;
+            line-height: 1.14286;
+            font-weight: 600;
+            letter-spacing: 0.007em;
+        }
+
+        p {
+            font-size: 19px;
+            line-height: 1.4211;
+            color: var(--text-secondary);
+        }
+
+        /* ============ Layout Components ============ */
+        .container {
+            max-width: var(--max-width);
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .section {
+            padding: 80px 0;
+            position: relative;
+        }
+
+        @media (min-width: 768px) {
+            .section {
+                padding: 120px 0;
+            }
+        }
+
+        /* ============ Navigation ============ */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 48px;
+            background: rgba(251, 251, 253, 0.72);
+            backdrop-filter: saturate(180%) blur(20px);
+            -webkit-backdrop-filter: saturate(180%) blur(20px);
+            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+            transition: var(--transition);
+        }
+
+        nav.scrolled {
+            box-shadow: var(--shadow-sm);
+        }
+
+        .nav-container {
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .logo {
+            font-size: 21px;
+            font-weight: 600;
+            color: var(--text-primary);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .logo-icon {
+            width: 28px;
+            height: 28px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 700;
+        }
+
+        .nav-links {
+            display: none;
+            list-style: none;
+            gap: 32px;
+        }
+
+        @media (min-width: 768px) {
+            .nav-links {
+                display: flex;
+            }
+        }
+
+        .nav-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 14px;
+            transition: color 0.2s;
+        }
+
+        .nav-links a:hover {
+            color: var(--text-primary);
+        }
+
+        .nav-cta {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 6px 16px;
+            border-radius: 980px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .nav-cta:hover {
+            background: var(--primary-dark);
+            transform: scale(1.05);
+        }
+
+        /* Mobile Menu */
+        .menu-toggle {
+            display: flex;
+            width: 28px;
+            height: 28px;
+            flex-direction: column;
+            justify-content: center;
+            gap: 4px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 0;
+        }
+
+        @media (min-width: 768px) {
+            .menu-toggle {
+                display: none;
+            }
+        }
+
+        .menu-line {
+            width: 18px;
+            height: 1.5px;
+            background: var(--text-primary);
+            transition: var(--transition);
+            margin: 0 auto;
+        }
+
+        .menu-toggle.active .menu-line:first-child {
+            transform: rotate(45deg) translate(3px, 3px);
+        }
+
+        .menu-toggle.active .menu-line:last-child {
+            transform: rotate(-45deg) translate(3px, -3px);
+        }
+
+        /* ============ Hero Section ============ */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            padding-top: 48px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320"><path fill="white" fill-opacity="0.1" d="M0,96L48,112C96,128,192,160,288,186.7C384,213,480,235,576,213.3C672,192,768,128,864,128C960,128,1056,192,1152,208C1248,224,1344,192,1392,176L1440,160L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path></svg>') no-repeat bottom;
+            background-size: cover;
+            opacity: 0.5;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+            text-align: center;
+            color: white;
+            animation: fadeInUp 1s ease-out;
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            padding: 8px 16px;
+            border-radius: 980px;
+            margin-bottom: 24px;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .hero h1 {
+            color: white;
+            margin-bottom: 24px;
+        }
+
+        .hero-subtitle {
+            font-size: 24px;
+            line-height: 1.33337;
+            font-weight: 400;
+            color: rgba(255, 255, 255, 0.9);
+            margin-bottom: 48px;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 16px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-bottom: 80px;
+        }
+
+        .btn {
+            padding: 14px 32px;
+            border-radius: 980px;
+            font-size: 17px;
+            font-weight: 500;
+            text-decoration: none;
+            cursor: pointer;
+            transition: var(--transition);
+            border: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-primary {
+            background: white;
+            color: var(--primary);
+        }
+
+        .btn-primary:hover {
+            transform: scale(1.05);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: white;
+            border: 2px solid white;
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: scale(1.05);
+        }
+
+        /* Hero Device Mockup */
+        .hero-device {
+            max-width: 375px;
+            margin: 0 auto;
+            opacity: 0;
+            animation: fadeInUp 1s ease-out 0.5s forwards;
+        }
+
+        .device-frame {
+            background: #1a1a1a;
+            border-radius: 40px;
+            padding: 8px;
+            box-shadow: 0 20px 80px rgba(0, 0, 0, 0.3);
+            position: relative;
+        }
+
+        .device-screen {
+            background: white;
+            border-radius: 32px;
+            padding: 20px;
+            min-height: 600px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .device-status-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            font-size: 12px;
+            color: var(--text-primary);
+        }
+
+        .device-app-header {
+            margin-bottom: 24px;
+        }
+
+        .device-greeting {
+            font-size: 14px;
+            color: var(--text-secondary);
+            margin-bottom: 4px;
+        }
+
+        .device-username {
+            font-size: 24px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .device-card {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border-radius: 16px;
+            padding: 20px;
+            color: white;
+            margin-bottom: 20px;
+        }
+
+        .device-card-title {
+            font-size: 14px;
+            opacity: 0.9;
+            margin-bottom: 8px;
+        }
+
+        .device-card-value {
+            font-size: 28px;
+            font-weight: 600;
+        }
+
+        /* ============ Features Section ============ */
+        .features {
+            background: var(--bg-secondary);
+        }
+
+        .features-header {
+            text-align: center;
+            margin-bottom: 80px;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 32px;
+        }
+
+        .feature-card {
+            background: white;
+            border-radius: var(--border-radius);
+            padding: 48px 32px;
+            text-align: center;
+            transition: var(--transition);
+            cursor: default;
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        .feature-card.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .feature-card:hover {
+            transform: translateY(-8px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .feature-icon {
+            width: 72px;
+            height: 72px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 24px;
+            font-size: 32px;
+            color: white;
+        }
+
+        .feature-card h3 {
+            margin-bottom: 16px;
+        }
+
+        .feature-list {
+            list-style: none;
+            text-align: left;
+            margin-top: 24px;
+        }
+
+        .feature-list li {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 8px 0;
+            font-size: 15px;
+            color: var(--text-secondary);
+        }
+
+        .check-icon {
+            width: 20px;
+            height: 20px;
+            background: var(--success);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            flex-shrink: 0;
+        }
+
+        /* ============ Process Section ============ */
+        .process {
+            background: white;
+        }
+
+        .process-header {
+            text-align: center;
+            margin-bottom: 80px;
+        }
+
+        .process-steps {
+            display: grid;
+            gap: 80px;
+        }
+
+        .process-step {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 48px;
+            align-items: center;
+            opacity: 0;
+            transform: translateX(-20px);
+        }
+
+        @media (min-width: 768px) {
+            .process-step {
+                grid-template-columns: 1fr 1fr;
+            }
+            
+            .process-step:nth-child(even) {
+                direction: rtl;
+            }
+            
+            .process-step:nth-child(even) > * {
+                direction: ltr;
+            }
+        }
+
+        .process-step.visible {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .process-content {
+            text-align: center;
+        }
+
+        @media (min-width: 768px) {
+            .process-content {
+                text-align: left;
+            }
+        }
+
+        .process-number {
+            width: 64px;
+            height: 64px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 28px;
+            font-weight: 700;
+            margin: 0 auto 24px;
+        }
+
+        @media (min-width: 768px) {
+            .process-number {
+                margin: 0 0 24px 0;
+            }
+        }
+
+        .process-visual {
+            background: var(--bg-secondary);
+            border-radius: var(--border-radius);
+            padding: 48px;
+            min-height: 300px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .process-visual::before {
+            content: '';
+            position: absolute;
+            width: 200px;
+            height: 200px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border-radius: 50%;
+            opacity: 0.1;
+            animation: pulse 3s ease-in-out infinite;
+        }
+
+        /* ============ Stats Section ============ */
+        .stats {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 48px;
+            text-align: center;
+        }
+
+        .stat-item {
+            opacity: 0;
+            transform: scale(0.9);
+        }
+
+        .stat-item.visible {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        .stat-number {
+            font-size: 48px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .stat-label {
+            font-size: 17px;
+            opacity: 0.9;
+        }
+
+        /* ============ Testimonials ============ */
+        .testimonials {
+            background: var(--bg-secondary);
+        }
+
+        .testimonials-header {
+            text-align: center;
+            margin-bottom: 80px;
+        }
+
+        .testimonials-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 32px;
+        }
+
+        .testimonial-card {
+            background: white;
+            border-radius: var(--border-radius);
+            padding: 32px;
+            position: relative;
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        .testimonial-card.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .testimonial-quote {
+            font-size: 19px;
+            line-height: 1.4;
+            color: var(--text-primary);
+            margin-bottom: 24px;
+        }
+
+        .testimonial-author {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .testimonial-avatar {
+            width: 48px;
+            height: 48px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+        }
+
+        .testimonial-info {
+            flex: 1;
+        }
+
+        .testimonial-name {
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 4px;
+        }
+
+        .testimonial-role {
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+
+        .testimonial-rating {
+            display: flex;
+            gap: 4px;
+            margin-bottom: 16px;
+        }
+
+        .star {
+            width: 16px;
+            height: 16px;
+            color: #ffc107;
+        }
+
+        /* ============ CTA Section ============ */
+        .cta-section {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-align: center;
+        }
+
+        .cta-content h2 {
+            color: white;
+            margin-bottom: 24px;
+        }
+
+        .cta-subtitle {
+            font-size: 21px;
+            opacity: 0.9;
+            margin-bottom: 48px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* ============ Footer ============ */
+        footer {
+            background: var(--text-primary);
+            color: white;
+            padding: 48px 0 24px;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 48px;
+            margin-bottom: 48px;
+        }
+
+        .footer-column h4 {
+            font-size: 17px;
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+
+        .footer-links {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 12px;
+        }
+
+        .footer-links a {
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            font-size: 15px;
+            transition: color 0.2s;
+        }
+
+        .footer-links a:hover {
+            color: white;
+        }
+
+        .footer-bottom {
+            padding-top: 24px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            text-align: center;
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        /* ============ Animations ============ */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.1);
+            }
+        }
+
+        .fade-in {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* ============ Mobile Optimizations ============ */
+        @media (max-width: 767px) {
+            .container {
+                padding: 0 16px;
+            }
+            
+            .hero-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .btn {
+                width: 100%;
+                max-width: 280px;
+                justify-content: center;
+            }
+            
+            .features-grid,
+            .testimonials-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .process-visual {
+                padding: 32px;
+                min-height: 200px;
+            }
+        }
+
+        /* ============ Loading Animation ============ */
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            opacity: 1;
+            transition: opacity 0.5s ease-out;
+        }
+
+        .loading-overlay.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .loading-spinner {
+            width: 48px;
+            height: 48px;
+            border: 3px solid var(--bg-secondary);
+            border-top-color: var(--primary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Loading Overlay -->
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="loading-spinner"></div>
+    </div>
+
+    <!-- Navigation -->
+    <nav id="navbar">
+        <div class="container nav-container">
+            <a href="#" class="logo">
+                <span class="logo-icon">B</span>
+                BenefitFlow
+            </a>
+            
+            <ul class="nav-links">
+                <li><a href="#features">Features</a></li>
+                <li><a href="#process">How It Works</a></li>
+                <li><a href="#testimonials">Testimonials</a></li>
+                <li><a href="#pricing">Pricing</a></li>
+            </ul>
+            
+            <button class="nav-cta">Get Started</button>
+            
+            <button class="menu-toggle" id="menuToggle" aria-label="Menu">
+                <span class="menu-line"></span>
+                <span class="menu-line"></span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero section">
+        <div class="container">
+            <div class="hero-content">
+                <div class="hero-badge">
+                    <span>✨</span>
+                    <span>AI-Powered Benefits Platform</span>
+                </div>
+                
+                <h1>Benefits Enrollment<br>Reimagined</h1>
+                
+                <p class="hero-subtitle">
+                    Transform your benefits experience with AI-powered recommendations, 
+                    zero-touch setup, and seamless carrier integration.
+                </p>
+                
+                <div class="hero-buttons">
+                    <button class="btn btn-primary">
+                        Start Free Trial
+                        <span>→</span>
+                    </button>
+                    <button class="btn btn-secondary">
+                        Watch Demo
+                    </button>
+                </div>
+                
+                <!-- Device Mockup -->
+                <div class="hero-device">
+                    <div class="device-frame">
+                        <div class="device-screen">
+                            <div class="device-status-bar">
+                                <span>9:41</span>
+                                <span>⚡ 🔋</span>
+                            </div>
+                            
+                            <div class="device-app-header">
+                                <div class="device-greeting">Welcome back</div>
+                                <div class="device-username">Alex Johnson</div>
+                            </div>
+                            
+                            <div class="device-card">
+                                <div class="device-card-title">AI Recommendation</div>
+                                <div class="device-card-value">PPO Gold Plan</div>
+                                <div style="margin-top: 12px; font-size: 14px; opacity: 0.9;">
+                                    94% confidence match
+                                </div>
+                            </div>
+                            
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+                                <div style="background: var(--bg-secondary); padding: 16px; border-radius: 12px; text-align: center;">
+                                    <div style="font-size: 24px; margin-bottom: 4px;">📊</div>
+                                    <div style="font-size: 12px; color: var(--text-secondary);">Compare Plans</div>
+                                </div>
+                                <div style="background: var(--bg-secondary); padding: 16px; border-radius: 12px; text-align: center;">
+                                    <div style="font-size: 24px; margin-bottom: 4px;">👥</div>
+                                    <div style="font-size: 12px; color: var(--text-secondary);">Add Dependent</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Document Upload Section -->
+    <section class="section" id="doc-upload">
+        <div class="container">
+            <h2>Upload Insurance Document</h2>
+            <form id="uploadForm" enctype="multipart/form-data" style="margin-bottom:2rem;">
+                <input type="file" id="fileInput" name="file" accept=".pdf,.doc,.docx,.png,.jpg,.jpeg" required />
+                <button type="submit" class="btn btn-primary" style="margin-left:1rem;">Extract Data</button>
+            </form>
+            <div id="extractionResult" style="margin-top:2rem;"></div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features section" id="features">
+        <div class="container">
+            <div class="features-header">
+                <h2>Everything You Need</h2>
+                <p>Comprehensive tools for employees, employers, and brokers</p>
+            </div>
+            
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">🧠</div>
+                    <h3>AI Decision Coach</h3>
+                    <p>Get personalized recommendations based on your unique situation</p>
+                    <ul class="feature-list">
+                        <li>
+                            <span class="check-icon">✓</span>
+                            <span>94% accuracy in plan matching</span>
+                        </li>
+                        <li>
+                            <span class="check-icon">✓</span>
+                            <span>Real-time cost projections</span>
+                        </li>
+                        <li>
+                            <span class="check-icon">✓</span>
+                            <span>Life event analysis</span>
+                        </li>
+                    </ul>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">⚡</div>
+                    <h3>Zero-Touch Setup</h3>
+                    <p>Upload documents and let AI configure everything automatically</p>
+                    <ul class="feature-list">
+                        <li>
+                            <span class="check-icon">✓</span>
+                            <span>90% faster than manual setup</span>
+                        </li>
+                        <li>
+                            <span class="check-icon">✓</span>
+                            <span>98% extraction accuracy</span>
+                        </li>
+                        <li>
+                            <span class="check-icon">✓</span>
+                            <span>Auto-validation & review</span>
+                        </li>
+                    </ul>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">📱</div>
+                    <h3>Mobile-First Design</h3>
+                    <p>Complete enrollment from any device with biometric authentication</p>
+                    <ul class="feature-list">
+                        <li>
+                            <span class="check-icon">✓</span>
+                            <span>Progressive Web App</span>
+                        </li>
+                        <li>
+                            <span class="check-icon">✓</span>
+                            <span>Face ID/Touch ID login</span>
+                        </li>
+                        <li>
+                            <span class="check-icon">✓</span>
+                            <span>&lt; 15 min enrollment</span>
+                        </li>
+                    </ul>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">🔗</div>
+                    <h3>Carrier Integration</h3>
+                    <p>Connect with any carrier through resilient middleware</p>
+                    <ul class="feature-list">
+                        <li>
+                            <span class="check-icon">✓</span>
+                            <span>EDI 834/820 support</span>
+                        </li>
+                        <li>
+                            <span class="check-icon">✓</span>
+                            <span>Real-time API connections</span>
+                        </li>
+                        <li>
+                            <span class="check-icon">✓</span>
+                            <span>99.9% uptime guarantee</span>
+                        </li>
+                    </ul>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">🔒</div>
+                    <h3>Enterprise Security</h3>
+                    <p>Bank-level security with full HIPAA compliance</p>
+                    <ul class="feature-list">
+                        <li>
+                            <span class="check-icon">✓</span>
+                            <span>AES-256 encryption</span>
+                        </li>
+                        <li>
+                            <span class="check-icon">✓</span>
+                            <span>SOC 2 Type II certified</span>
+                        </li>
+                        <li>
+                            <span class="check-icon">✓</span>
+                            <span>Audit logging & compliance</span>
+                        </li>
+                    </ul>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">📈</div>
+                    <h3>Analytics Dashboard</h3>
+                    <p>Real-time insights into enrollment trends and costs</p>
+                    <ul class="feature-list">
+                        <li>
+                            <span class="check-icon">✓</span>
+                            <span>Predictive cost modeling</span>
+                        </li>
+                        <li>
+                            <span class="check-icon">✓</span>
+                            <span>Utilization tracking</span>
+                        </li>
+                        <li>
+                            <span class="check-icon">✓</span>
+                            <span>Custom reporting</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Plans Section -->
+    <section class="section" id="plans">
+        <div class="container">
+            <div class="features-header">
+                <h2>Available Benefit Plans</h2>
+                <p>Choose the plan that fits your needs</p>
+            </div>
+            <div id="plans-list" class="features-grid"></div>
+        </div>
+    </section>
+
+    <!-- Process Section -->
+    <section class="process section" id="process">
+        <div class="container">
+            <div class="process-header">
+                <h2>How It Works</h2>
+                <p>From setup to enrollment in three simple steps</p>
+            </div>
+            
+            <div class="process-steps">
+                <div class="process-step">
+                    <div class="process-content">
+                        <div class="process-number">1</div>
+                        <h3>Upload Documents</h3>
+                        <p>Simply upload your carrier contracts, SPDs, and billing statements. Our AI-powered document processor extracts and validates all plan details automatically.</p>
+                    </div>
+                    <div class="process-visual">
+                        <div style="font-size: 72px;">📄</div>
+                    </div>
+                </div>
+                
+                <div class="process-step">
+                    <div class="process-content">
+                        <div class="process-number">2</div>
+                        <h3>AI Recommendations</h3>
+                        <p>Employees receive personalized plan recommendations based on their unique situation, with transparent reasoning and cost projections.</p>
+                    </div>
+                    <div class="process-visual">
+                        <div style="font-size: 72px;">🤖</div>
+                    </div>
+                </div>
+                
+                <div class="process-step">
+                    <div class="process-content">
+                        <div class="process-number">3</div>
+                        <h3>Instant Enrollment</h3>
+                        <p>Complete enrollment in under 15 minutes from any device. Automatic carrier submission with real-time status tracking.</p>
+                    </div>
+                    <div class="process-visual">
+                        <div style="font-size: 72px;">✅</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Stats Section -->
+    <section class="stats section">
+        <div class="container">
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <div class="stat-number">95%</div>
+                    <div class="stat-label">Enrollment Completion</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">&lt;15m</div>
+                    <div class="stat-label">Average Time</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">4.9/5</div>
+                    <div class="stat-label">User Rating</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">99.9%</div>
+                    <div class="stat-label">Uptime</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section class="testimonials section" id="testimonials">
+        <div class="container">
+            <div class="testimonials-header">
+                <h2>Loved by HR Teams</h2>
+                <p>Join thousands of companies transforming their benefits experience</p>
+            </div>
+            
+            <div class="testimonials-grid">
+                <div class="testimonial-card">
+                    <div class="testimonial-rating">
+                        <span class="star">★</span>
+                        <span class="star">★</span>
+                        <span class="star">★</span>
+                        <span class="star">★</span>
+                        <span class="star">★</span>
+                    </div>
+                    <p class="testimonial-quote">
+                        "Cut our enrollment time by 75% and employee satisfaction scores are through the roof. The AI recommendations are incredibly accurate."
+                    </p>
+                    <div class="testimonial-author">
+                        <div class="testimonial-avatar">SJ</div>
+                        <div class="testimonial-info">
+                            <div class="testimonial-name">Sarah Johnson</div>
+                            <div class="testimonial-role">VP of HR, TechCorp</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="testimonial-card">
+                    <div class="testimonial-rating">
+                        <span class="star">★</span>
+                        <span class="star">★</span>
+                        <span class="star">★</span>
+                        <span class="star">★</span>
+                        <span class="star">★</span>
+                    </div>
+                    <p class="testimonial-quote">
+                        "The zero-touch setup saved us weeks of work. Upload documents, review, and deploy. It's that simple."
+                    </p>
+                    <div class="testimonial-author">
+                        <div class="testimonial-avatar">MC</div>
+                        <div class="testimonial-info">
+                            <div class="testimonial-name">Michael Chen</div>
+                            <div class="testimonial-role">Benefits Manager, HealthCo</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="testimonial-card">
+                    <div class="testimonial-rating">
+                        <span class="star">★</span>
+                        <span class="star">★</span>
+                        <span class="star">★</span>
+                        <span class="star">★</span>
+                        <span class="star">★</span>
+                    </div>
+                    <p class="testimonial-quote">
+                        "Finally, a platform that employees actually want to use. Mobile-first design and AI coach make all the difference."
+                    </p>
+                    <div class="testimonial-author">
+                        <div class="testimonial-avatar">ER</div>
+                        <div class="testimonial-info">
+                            <div class="testimonial-name">Emily Rodriguez</div>
+                            <div class="testimonial-role">CHRO, FinanceHub</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta-section section">
+        <div class="container">
+            <div class="cta-content">
+                <h2>Ready to Transform Your Benefits?</h2>
+                <p class="cta-subtitle">
+                    Join thousands of companies already using our AI-powered platform. 
+                    Start your free trial today—no credit card required.
+                </p>
+                <div class="hero-buttons">
+                    <button class="btn btn-primary">
+                        Start Free Trial
+                        <span>→</span>
+                    </button>
+                    <button class="btn btn-secondary">
+                        Schedule Demo
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <h4>Product</h4>
+                    <ul class="footer-links">
+                        <li><a href="#">Features</a></li>
+                        <li><a href="#">Pricing</a></li>
+                        <li><a href="#">Security</a></li>
+                        <li><a href="#">Roadmap</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-column">
+                    <h4>Company</h4>
+                    <ul class="footer-links">
+                        <li><a href="#">About</a></li>
+                        <li><a href="#">Blog</a></li>
+                        <li><a href="#">Careers</a></li>
+                        <li><a href="#">Contact</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-column">
+                    <h4>Resources</h4>
+                    <ul class="footer-links">
+                        <li><a href="#">Documentation</a></li>
+                        <li><a href="#">API Reference</a></li>
+                        <li><a href="#">Support</a></li>
+                        <li><a href="#">Status</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-column">
+                    <h4>Legal</h4>
+                    <ul class="footer-links">
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Terms of Service</a></li>
+                        <li><a href="#">HIPAA Compliance</a></li>
+                        <li><a href="#">SOC 2 Report</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>© 2025 BenefitFlow. All rights reserved. Built with pure web technologies.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        /* ============ Vanilla JavaScript - No Dependencies ============ */
+        
+        // Remove loading overlay when page loads
+        window.addEventListener('load', () => {
+            const loadingOverlay = document.getElementById('loadingOverlay');
+            setTimeout(() => {
+                loadingOverlay.classList.add('hidden');
+            }, 500);
+        });
+        
+        // Navbar scroll effect
+        let lastScroll = 0;
+        const navbar = document.getElementById('navbar');
+        
+        window.addEventListener('scroll', () => {
+            const currentScroll = window.pageYOffset;
+            
+            // Add/remove scrolled class
+            if (currentScroll > 20) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+            
+            lastScroll = currentScroll;
+        });
+        
+        // Mobile menu toggle
+        const menuToggle = document.getElementById('menuToggle');
+        menuToggle.addEventListener('click', () => {
+            menuToggle.classList.toggle('active');
+            // In production, this would toggle a mobile menu overlay
+        });
+        
+        // Smooth scroll for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    const offset = 80; // Account for fixed navbar
+                    const targetPosition = target.getBoundingClientRect().top + window.pageYOffset - offset;
+                    window.scrollTo({
+                        top: targetPosition,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+        
+        // Intersection Observer for scroll animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+        
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    
+                    // For stats, animate numbers
+                    if (entry.target.classList.contains('stat-item')) {
+                        animateStatNumber(entry.target);
+                    }
+                }
+            });
+        }, observerOptions);
+        
+        // Observe all animated elements
+        document.querySelectorAll('.feature-card, .process-step, .stat-item, .testimonial-card').forEach(el => {
+            observer.observe(el);
+        });
+        
+        // Animate stat numbers
+        function animateStatNumber(element) {
+            const numberElement = element.querySelector('.stat-number');
+            const finalText = numberElement.textContent;
+            
+            // Handle different number formats
+            if (finalText.includes('%')) {
+                const finalNumber = parseInt(finalText);
+                animateValue(numberElement, 0, finalNumber, 1500, '%');
+            } else if (finalText.includes('.')) {
+                const finalNumber = parseFloat(finalText);
+                animateValue(numberElement, 0, finalNumber, 1500, '/5');
+            }
+            // For time values like "<15m", just fade in
+        }
+        
+        // Number animation helper
+        function animateValue(element, start, end, duration, suffix = '') {
+            const startTimestamp = Date.now();
+            const step = () => {
+                const timestamp = Date.now();
+                const progress = Math.min((timestamp - startTimestamp) / duration, 1);
+                
+                // Easing function for smooth animation
+                const easeOutQuart = 1 - Math.pow(1 - progress, 4);
+                
+                const current = start + (end - start) * easeOutQuart;
+                
+                if (suffix.includes('/')) {
+                    element.textContent = current.toFixed(1) + suffix;
+                } else {
+                    element.textContent = Math.floor(current) + suffix;
+                }
+                
+                if (progress < 1) {
+                    requestAnimationFrame(step);
+                }
+            };
+            requestAnimationFrame(step);
+        }
+        
+        // Button click handlers
+        document.querySelectorAll('.btn, .nav-cta').forEach(button => {
+            button.addEventListener('click', function(e) {
+                if (!this.href) {
+                    e.preventDefault();
+                    
+                    // Add ripple effect
+                    const ripple = document.createElement('span');
+                    ripple.classList.add('ripple');
+                    this.appendChild(ripple);
+                    
+                    // In production, this would trigger appropriate actions
+                    if (this.textContent.includes('Start') || this.textContent.includes('Get Started')) {
+                        // Navigate to sign-up
+                        console.log('Navigating to sign-up...');
+                    } else if (this.textContent.includes('Demo')) {
+                        // Open demo modal or navigate to demo
+                        console.log('Opening demo...');
+                    }
+                    
+                    // Remove ripple after animation
+                    setTimeout(() => ripple.remove(), 600);
+                }
+            });
+        });
+        
+        // Performance monitoring (in production, send to analytics)
+        window.addEventListener('load', () => {
+            if ('performance' in window) {
+                const perfData = window.performance.timing;
+                const pageLoadTime = perfData.loadEventEnd - perfData.navigationStart;
+                console.log(`Page load time: ${pageLoadTime}ms`);
+                
+                // Check Core Web Vitals
+                if ('PerformanceObserver' in window) {
+                    // Largest Contentful Paint
+                    new PerformanceObserver((entryList) => {
+                        const entries = entryList.getEntries();
+                        const lastEntry = entries[entries.length - 1];
+                        console.log('LCP:', lastEntry.renderTime || lastEntry.loadTime);
+                    }).observe({type: 'largest-contentful-paint', buffered: true});
+                    
+                    // First Input Delay
+                    new PerformanceObserver((entryList) => {
+                        const firstInput = entryList.getEntries()[0];
+                        const fid = firstInput.processingStart - firstInput.startTime;
+                        console.log('FID:', fid);
+                    }).observe({type: 'first-input', buffered: true});
+                    
+                    // Cumulative Layout Shift
+                    let cls = 0;
+                    new PerformanceObserver((entryList) => {
+                        for (const entry of entryList.getEntries()) {
+                            if (!entry.hadRecentInput) {
+                                cls += entry.value;
+                            }
+                        }
+                        console.log('CLS:', cls);
+                    }).observe({type: 'layout-shift', buffered: true});
+                }
+            }
+        });
+        
+        // PWA - Register service worker (in production)
+        if ('serviceWorker' in navigator && location.protocol === 'https:') {
+            window.addEventListener('load', () => {
+                // navigator.serviceWorker.register('/sw.js')
+                //     .then(reg => console.log('Service Worker registered'))
+                //     .catch(err => console.log('Service Worker registration failed'));
+            });
+        }
+        
+        // Lazy load images (if any)
+        if ('IntersectionObserver' in window) {
+            const imageObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const img = entry.target;
+                        if (img.dataset.src) {
+                            img.src = img.dataset.src;
+                            img.removeAttribute('data-src');
+                            imageObserver.unobserve(img);
+                        }
+                    }
+                });
+            });
+            
+            document.querySelectorAll('img[data-src]').forEach(img => {
+                imageObserver.observe(img);
+            });
+        }
+        
+        // Prefetch important resources
+        const prefetchLinks = [
+            '/api/auth',
+            '/api/plans',
+            '/api/enrollment'
+        ];
+        
+        prefetchLinks.forEach(url => {
+            const link = document.createElement('link');
+            link.rel = 'prefetch';
+            link.href = url;
+            document.head.appendChild(link);
+        });
+        
+        // Handle offline/online events
+        window.addEventListener('online', () => {
+            console.log('Back online');
+            // In production, sync any offline changes
+        });
+        
+        window.addEventListener('offline', () => {
+            console.log('Gone offline');
+            // In production, show offline indicator
+        });
+
+        // Fetch and display benefit plans from API
+        function renderPlans(plans) {
+            const plansList = document.getElementById('plans-list');
+            if (!plansList) return;
+            plansList.innerHTML = plans.map(plan => `
+                <div class="feature-card visible">
+                    <div class="feature-icon">💡</div>
+                    <h3>${plan.name}</h3>
+                    <p class="plan-price">$${plan.price}/month</p>
+                    <button class="btn btn-primary" onclick="alert('Enrolling in: ${plan.name}')">Enroll Now</button>
+                </div>
+            `).join('');
+        }
+
+        fetch('http://localhost:4000/api/plans')
+            .then(res => res.json())
+            .then(renderPlans)
+            .catch(() => {
+                const plansList = document.getElementById('plans-list');
+                if (plansList) plansList.innerHTML = '<p style="color:red">Unable to load plans. Please try again later.</p>';
+            });
+        
+        // Document upload and extraction logic
+        const uploadForm = document.getElementById('uploadForm');
+        const extractionResult = document.getElementById('extractionResult');
+        if (uploadForm) {
+            uploadForm.addEventListener('submit', async function(e) {
+                e.preventDefault();
+                extractionResult.innerHTML = 'Extracting...';
+                const fileInput = document.getElementById('fileInput');
+                if (!fileInput.files.length) return;
+                const formData = new FormData();
+                formData.append('file', fileInput.files[0]);
+                try {
+                    const res = await fetch('http://localhost:9000/process-contract', {
+                        method: 'POST',
+                        body: formData
+                    });
+                    if (!res.ok) throw new Error('Extraction failed');
+                    const data = await res.json();
+                    extractionResult.innerHTML = `<pre style='text-align:left;overflow-x:auto;background:#f5f5f7;padding:1em;border-radius:8px;'>${JSON.stringify(data, null, 2)}</pre>`;
+                } catch (err) {
+                    extractionResult.innerHTML = `<span style='color:red;'>Extraction failed: ${err.message}</span>`;
+                }
+            });
+        }
+    </script>
+</body>
+</html>

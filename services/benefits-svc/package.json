@@ -1,0 +1,13 @@
+{
+  "name": "@benefits/benefits-service",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "express": "^4.18.0",
+    "@prisma/client": "5.19.1",
+    "dotenv": "^16.0.0"
+  }
+}
