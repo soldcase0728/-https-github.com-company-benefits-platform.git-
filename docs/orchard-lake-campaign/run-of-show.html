@@ -1,0 +1,1040 @@
+<title>Orchard Lake Run of Show</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=Spectral:ital,wght@0,400;0,500;0,600;1,400&display=swap">
+<style>
+  :root{
+    --paper:#EBEDEE;
+    --surface:#F6F7F8;
+    --surface-2:#E1E5E7;
+    --ink:#15181A;
+    --ink-2:#333B3E;
+    --muted:#697377;
+    --rule:#D2D8DA;
+    --rule-strong:#B4BEC1;
+    --red:#A81C25;
+    --red-wash:rgba(168,28,37,.07);
+    --slate:#35494E;
+    --slate-wash:rgba(53,73,78,.07);
+    --shadow:0 1px 2px rgba(21,24,26,.05);
+  }
+  @media (prefers-color-scheme:dark){
+    :root:not([data-theme="light"]){
+      --paper:#0F1214;
+      --surface:#161A1D;
+      --surface-2:#1E2427;
+      --ink:#E7EAEB;
+      --ink-2:#BDC4C7;
+      --muted:#879195;
+      --rule:#282F32;
+      --rule-strong:#3A4347;
+      --red:#E4626C;
+      --red-wash:rgba(228,98,108,.10);
+      --slate:#83A6AC;
+      --slate-wash:rgba(131,166,172,.10);
+      --shadow:0 1px 2px rgba(0,0,0,.4);
+    }
+  }
+  :root[data-theme="dark"]{
+    --paper:#0F1214;
+    --surface:#161A1D;
+    --surface-2:#1E2427;
+    --ink:#E7EAEB;
+    --ink-2:#BDC4C7;
+    --muted:#879195;
+    --rule:#282F32;
+    --rule-strong:#3A4347;
+    --red:#E4626C;
+    --red-wash:rgba(228,98,108,.10);
+    --slate:#83A6AC;
+    --slate-wash:rgba(131,166,172,.10);
+    --shadow:0 1px 2px rgba(0,0,0,.4);
+  }
+
+  *{box-sizing:border-box}
+  body{
+    background:var(--paper);
+    color:var(--ink);
+    font-family:Spectral,Georgia,"Times New Roman",serif;
+    font-size:17px;
+    line-height:1.62;
+    -webkit-font-smoothing:antialiased;
+  }
+  .cond{font-family:"Barlow Condensed","Arial Narrow",Arial,sans-serif}
+  .mono{font-family:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,monospace}
+
+  /* ---------- shell ---------- */
+  .shell{
+    max-width:1240px;
+    margin:0 auto;
+    padding:0 28px 120px;
+    display:grid;
+    grid-template-columns:196px minmax(0,1fr);
+    gap:0 60px;
+    align-items:start;
+  }
+
+  /* ---------- masthead ---------- */
+  .masthead{
+    grid-column:1/-1;
+    border-bottom:2px solid var(--ink);
+    padding:52px 0 22px;
+    margin-bottom:52px;
+  }
+  .eyebrow{
+    font-family:"IBM Plex Mono",monospace;
+    font-size:11px;
+    letter-spacing:.13em;
+    text-transform:uppercase;
+    color:var(--red);
+    display:flex;
+    flex-wrap:wrap;
+    gap:10px 18px;
+    margin-bottom:26px;
+  }
+  .eyebrow span:not(:first-child){color:var(--muted)}
+  h1{
+    font-family:"Barlow Condensed","Arial Narrow",sans-serif;
+    font-weight:700;
+    font-size:clamp(44px,8.2vw,104px);
+    line-height:.9;
+    letter-spacing:-.012em;
+    text-transform:uppercase;
+    margin:0 0 20px;
+    text-wrap:balance;
+  }
+  h1 em{font-style:normal;color:var(--red)}
+  .standfirst{
+    font-size:19px;
+    color:var(--ink-2);
+    max-width:62ch;
+    margin:0;
+  }
+  .standfirst strong{font-weight:600;color:var(--ink)}
+
+  /* ---------- nav rail ---------- */
+  .rail{
+    position:sticky;
+    top:24px;
+    align-self:start;
+    border-top:1px solid var(--rule);
+    padding-top:14px;
+  }
+  .rail-title{
+    font-family:"IBM Plex Mono",monospace;
+    font-size:10px;
+    letter-spacing:.14em;
+    text-transform:uppercase;
+    color:var(--muted);
+    margin-bottom:12px;
+  }
+  .rail ol{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:1px}
+  .rail a{
+    font-family:"Barlow Condensed",sans-serif;
+    font-size:15.5px;
+    letter-spacing:.02em;
+    text-transform:uppercase;
+    color:var(--muted);
+    text-decoration:none;
+    display:grid;
+    grid-template-columns:26px 1fr;
+    gap:6px;
+    padding:3px 0;
+    border-bottom:1px solid transparent;
+  }
+  .rail a .n{font-family:"IBM Plex Mono",monospace;font-size:10.5px;padding-top:3px}
+  .rail a:hover{color:var(--red)}
+  .rail a:focus-visible{outline:2px solid var(--red);outline-offset:2px}
+
+  /* ---------- sections ---------- */
+  main{min-width:0}
+  section{margin-bottom:76px;scroll-margin-top:24px}
+  .slate{
+    display:flex;
+    align-items:baseline;
+    gap:12px;
+    border-top:2px solid var(--red);
+    padding-top:9px;
+    margin-bottom:14px;
+  }
+  .slate .code{
+    font-family:"IBM Plex Mono",monospace;
+    font-size:11px;
+    font-weight:600;
+    color:var(--red);
+    letter-spacing:.08em;
+  }
+  .slate .tag{
+    font-family:"Barlow Condensed",sans-serif;
+    font-size:12.5px;
+    font-weight:600;
+    letter-spacing:.17em;
+    text-transform:uppercase;
+    color:var(--muted);
+  }
+  h2{
+    font-family:"Barlow Condensed",sans-serif;
+    font-weight:600;
+    font-size:clamp(28px,3.6vw,40px);
+    line-height:1.03;
+    letter-spacing:-.005em;
+    text-transform:uppercase;
+    margin:0 0 22px;
+    text-wrap:balance;
+    max-width:22ch;
+  }
+  h3{
+    font-family:"Barlow Condensed",sans-serif;
+    font-weight:600;
+    font-size:20px;
+    letter-spacing:.06em;
+    text-transform:uppercase;
+    color:var(--ink);
+    margin:38px 0 12px;
+  }
+  h4{
+    font-family:"IBM Plex Mono",monospace;
+    font-weight:600;
+    font-size:11.5px;
+    letter-spacing:.11em;
+    text-transform:uppercase;
+    color:var(--muted);
+    margin:0 0 8px;
+  }
+  p{max-width:68ch;margin:0 0 18px}
+  main ul,main ol{max-width:68ch;margin:0 0 20px;padding-left:20px}
+  main li{margin-bottom:7px}
+  strong{font-weight:600}
+  em.term{font-style:italic;color:var(--ink-2)}
+  a.inline{color:var(--red);text-decoration-thickness:1px;text-underline-offset:2px}
+
+  /* ---------- devices ---------- */
+  .lede{
+    font-size:20px;
+    line-height:1.5;
+    color:var(--ink-2);
+    max-width:60ch;
+  }
+  .callout{
+    border-left:3px solid var(--red);
+    background:var(--red-wash);
+    padding:16px 20px;
+    margin:0 0 24px;
+    max-width:68ch;
+  }
+  .callout p:last-child{margin-bottom:0}
+  .callout h4{color:var(--red)}
+
+  .note{
+    border:1px solid var(--rule);
+    background:var(--surface);
+    padding:14px 18px;
+    margin:0 0 24px;
+    max-width:68ch;
+    font-size:15.5px;
+    color:var(--ink-2);
+  }
+  .note p:last-child{margin-bottom:0}
+
+  .resolve{
+    font-family:"Barlow Condensed",sans-serif;
+    font-weight:700;
+    text-transform:uppercase;
+    font-size:clamp(22px,3.4vw,34px);
+    line-height:1.02;
+    letter-spacing:-.004em;
+    color:var(--ink);
+    border-top:1px solid var(--rule-strong);
+    border-bottom:1px solid var(--rule-strong);
+    padding:18px 0;
+    margin:30px 0;
+    max-width:24ch;
+  }
+
+  /* locked-inputs band */
+  .locked{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(190px,1fr));
+    gap:1px;
+    background:var(--rule);
+    border:1px solid var(--rule);
+    margin:0 0 26px;
+  }
+  .locked > div{background:var(--surface);padding:14px 16px}
+  .locked dt{
+    font-family:"IBM Plex Mono",monospace;
+    font-size:10px;
+    letter-spacing:.12em;
+    text-transform:uppercase;
+    color:var(--muted);
+    margin-bottom:6px;
+  }
+  .locked dd{
+    margin:0;
+    font-family:"Barlow Condensed",sans-serif;
+    font-size:20px;
+    font-weight:600;
+    line-height:1.12;
+    text-transform:uppercase;
+    letter-spacing:.01em;
+  }
+  .locked dd small{
+    display:block;
+    font-family:Spectral,serif;
+    font-size:13.5px;
+    font-weight:400;
+    text-transform:none;
+    letter-spacing:0;
+    color:var(--muted);
+    margin-top:5px;
+    line-height:1.4;
+  }
+
+  /* tables */
+  .tablewrap{
+    overflow-x:auto;
+    border:1px solid var(--rule);
+    background:var(--surface);
+    margin:0 0 26px;
+  }
+  table{border-collapse:collapse;width:100%;font-size:14.5px}
+  th{
+    font-family:"Barlow Condensed",sans-serif;
+    font-size:12px;
+    font-weight:600;
+    letter-spacing:.13em;
+    text-transform:uppercase;
+    text-align:left;
+    color:var(--muted);
+    padding:11px 14px;
+    border-bottom:1.5px solid var(--rule-strong);
+    white-space:nowrap;
+    background:var(--surface-2);
+  }
+  td{
+    padding:11px 14px;
+    border-bottom:1px solid var(--rule);
+    vertical-align:top;
+    line-height:1.42;
+    color:var(--ink-2);
+  }
+  tbody tr:last-child td{border-bottom:none}
+  td.k{color:var(--ink);font-weight:500}
+  td .q{color:var(--ink);font-style:italic}
+  .num{font-family:"IBM Plex Mono",monospace;font-variant-numeric:tabular-nums;font-size:13px;white-space:nowrap;color:var(--ink)}
+  .wk{font-family:"IBM Plex Mono",monospace;font-size:11.5px;font-weight:600;color:var(--red);white-space:nowrap}
+  .phase{
+    font-family:"Barlow Condensed",sans-serif;
+    font-size:12px;
+    font-weight:600;
+    letter-spacing:.11em;
+    text-transform:uppercase;
+    color:var(--slate);
+    white-space:nowrap;
+  }
+  tr.band td{
+    background:var(--slate-wash);
+    font-family:"Barlow Condensed",sans-serif;
+    font-size:13px;
+    font-weight:600;
+    letter-spacing:.15em;
+    text-transform:uppercase;
+    color:var(--slate);
+    padding-top:9px;
+    padding-bottom:9px;
+  }
+
+  /* two-column get/never */
+  .split{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+    gap:1px;
+    background:var(--rule);
+    border:1px solid var(--rule);
+    margin:0 0 26px;
+  }
+  .split > div{background:var(--surface);padding:18px 20px}
+  .split ul{margin:0;padding-left:18px;font-size:15px;max-width:none}
+  .split li{margin-bottom:6px;color:var(--ink-2)}
+  .split h4{margin-bottom:12px}
+  .split .yes h4{color:var(--slate)}
+  .split .no h4{color:var(--red)}
+
+  /* post spec cards */
+  .spec{
+    border:1px solid var(--rule);
+    background:var(--surface);
+    margin:0 0 22px;
+  }
+  .spec-head{
+    display:flex;
+    flex-wrap:wrap;
+    gap:8px 16px;
+    align-items:baseline;
+    padding:11px 20px;
+    border-bottom:1px solid var(--rule);
+    background:var(--surface-2);
+  }
+  .spec-head .name{
+    font-family:"Barlow Condensed",sans-serif;
+    font-size:17px;
+    font-weight:600;
+    letter-spacing:.11em;
+    text-transform:uppercase;
+  }
+  .spec-head .meta{
+    font-family:"IBM Plex Mono",monospace;
+    font-size:10.5px;
+    letter-spacing:.08em;
+    text-transform:uppercase;
+    color:var(--muted);
+  }
+  .spec-body{padding:18px 20px}
+  .spec-body p{margin-bottom:14px}
+  .spec-body p:last-child{margin-bottom:0}
+  .script{
+    font-family:"Barlow Condensed",sans-serif;
+    font-size:19px;
+    line-height:1.32;
+    letter-spacing:.01em;
+    color:var(--ink);
+    border-left:2px solid var(--red);
+    padding-left:16px;
+    margin:0 0 16px;
+    max-width:44ch;
+  }
+  .script span{display:block}
+  .beat{
+    font-family:"IBM Plex Mono",monospace;
+    font-size:12px;
+    line-height:1.65;
+    color:var(--muted);
+    margin:0 0 16px;
+    max-width:60ch;
+  }
+  .beat b{color:var(--ink-2);font-weight:500}
+  .caption-demo{
+    font-size:16px;
+    font-style:italic;
+    color:var(--ink-2);
+    border-top:1px solid var(--rule);
+    padding-top:12px;
+    margin:0;
+  }
+  .caption-demo::before{
+    content:"Caption";
+    display:block;
+    font-family:"IBM Plex Mono",monospace;
+    font-size:10px;
+    font-style:normal;
+    letter-spacing:.12em;
+    text-transform:uppercase;
+    color:var(--muted);
+    margin-bottom:5px;
+  }
+
+  /* tests */
+  .tests{display:grid;gap:14px;margin:0 0 26px;max-width:68ch}
+  .test{
+    display:grid;
+    grid-template-columns:auto 1fr;
+    gap:14px;
+    align-items:start;
+    border-bottom:1px solid var(--rule);
+    padding-bottom:14px;
+  }
+  .test:last-child{border-bottom:none;padding-bottom:0}
+  .test .t{
+    font-family:"Barlow Condensed",sans-serif;
+    font-size:16px;
+    font-weight:600;
+    letter-spacing:.1em;
+    text-transform:uppercase;
+    color:var(--red);
+    white-space:nowrap;
+    padding-top:2px;
+  }
+  .test p{margin:0;font-size:16px}
+
+  /* risk list */
+  .risks{counter-reset:r;list-style:none;padding:0;max-width:68ch}
+  .risks li{
+    counter-increment:r;
+    display:grid;
+    grid-template-columns:32px 1fr;
+    gap:12px;
+    border-top:1px solid var(--rule);
+    padding:14px 0;
+    margin:0;
+  }
+  .risks li::before{
+    content:counter(r,decimal-leading-zero);
+    font-family:"IBM Plex Mono",monospace;
+    font-size:11px;
+    font-weight:600;
+    color:var(--red);
+    padding-top:5px;
+  }
+  .risks b{
+    display:block;
+    font-family:"Barlow Condensed",sans-serif;
+    font-size:18px;
+    font-weight:600;
+    letter-spacing:.05em;
+    text-transform:uppercase;
+    margin-bottom:3px;
+  }
+  .risks span{color:var(--ink-2);font-size:16px}
+
+  footer{
+    grid-column:1/-1;
+    border-top:2px solid var(--ink);
+    margin-top:20px;
+    padding-top:18px;
+    font-family:"IBM Plex Mono",monospace;
+    font-size:11px;
+    letter-spacing:.08em;
+    text-transform:uppercase;
+    color:var(--muted);
+    display:flex;
+    flex-wrap:wrap;
+    gap:8px 24px;
+  }
+
+  @media (max-width:900px){
+    .shell{grid-template-columns:minmax(0,1fr);padding:0 20px 90px}
+    .rail{
+      position:sticky;
+      top:0;
+      z-index:5;
+      background:var(--paper);
+      border-top:none;
+      border-bottom:1px solid var(--rule);
+      padding:10px 0;
+      margin-bottom:34px;
+    }
+    .rail-title{display:none}
+    .rail ol{flex-direction:row;overflow-x:auto;gap:18px;padding-bottom:4px}
+    .rail a{grid-template-columns:auto;white-space:nowrap;font-size:14px}
+    .rail a .n{display:none}
+    .masthead{padding-top:36px;margin-bottom:34px}
+    body{font-size:16.5px}
+  }
+  @media (prefers-reduced-motion:reduce){
+    *{animation:none!important;transition:none!important;scroll-behavior:auto!important}
+  }
+</style>
+
+<div class="shell">
+
+  <header class="masthead">
+    <div class="eyebrow">
+      <span>Orchard Lake St. Mary&rsquo;s</span>
+      <span>Build brief &mdash; 29 Aug 2026</span>
+      <span>Campaign: What Happens Next?</span>
+    </div>
+    <h1>Run of<br>Show<em>.</em></h1>
+    <p class="standfirst">The strategy is finished. What it does not yet have is a supply system. <strong>This is the ninety-day operating build</strong> &mdash; the capture engine, the fixed weekly slate, the thirteen-week calendar, and the rules that keep one campaign from quietly turning back into eight.</p>
+  </header>
+
+  <nav class="rail" aria-label="Sections">
+    <div class="rail-title">Sections</div>
+    <ol>
+      <li><a href="#read"><span class="n">00</span><span>The read</span></a></li>
+      <li><a href="#order"><span class="n">01</span><span>Build order</span></a></li>
+      <li><a href="#engine"><span class="n">02</span><span>Asset engine</span></a></li>
+      <li><a href="#slate"><span class="n">03</span><span>Weekly slate</span></a></li>
+      <li><a href="#construction"><span class="n">04</span><span>Construction</span></a></li>
+      <li><a href="#calendar"><span class="n">05</span><span>13 weeks</span></a></li>
+      <li><a href="#summit"><span class="n">06</span><span>Summit pipeline</span></a></li>
+      <li><a href="#shotlist"><span class="n">07</span><span>Shot list</span></a></li>
+      <li><a href="#governance"><span class="n">08</span><span>Governance</span></a></li>
+      <li><a href="#measure"><span class="n">09</span><span>Measurement</span></a></li>
+      <li><a href="#paid"><span class="n">10</span><span>Paid layer</span></a></li>
+      <li><a href="#fail"><span class="n">11</span><span>Failure modes</span></a></li>
+    </ol>
+  </nav>
+
+  <main>
+
+    <!-- 00 -->
+    <section id="read">
+      <div class="slate"><span class="code">00</span><span class="tag">The read</span></div>
+      <h2>What&rsquo;s right, and the three things I&rsquo;d change before posting</h2>
+
+      <p class="lede">The strategy is correct and I would not re-argue it. One campaign, one promise, three pillars, franchises as programming rather than campaigns &mdash; that is how durable brands are actually built, and the parent-priority evidence supports the position.</p>
+
+      <p>But campaigns like this do not fail at the strategy layer. They fail in week five, when the content bank runs dry and someone posts <em class="term">&ldquo;Our students had an amazing opportunity today!&rdquo;</em> because there was nothing else in the queue. Everything below is built to prevent that specific Tuesday.</p>
+
+      <p>Three changes first.</p>
+
+      <h3>1. Baseline the survey before the first post</h3>
+      <p>The plan says brand association should move materially upward in six months. Without a pre-launch reading among families who are actively cross-shopping, there is no denominator and the result is unfalsifiable either way. This is the highest-leverage item in the entire build and the easiest one to skip. It happens in Week 0 or the measurement section is decorative.</p>
+
+      <h3>2. Add a paid layer</h3>
+      <p>The strategy is entirely organic. The stated goal &mdash; shifting a category association among families who do not follow the school yet &mdash; is a reach goal, and organic reach to non-followers is unreliable and structurally declining. A small, geo-fenced spend behind the two strongest proven assets each month is what converts a good feed into a category position. Without it, the campaign will move the people already inside the community and that will get misread as success.</p>
+
+      <h3>3. The promise is a category argument, not an Orchard Lake argument</h3>
+      <p><em class="term">High school should prepare you for all of it</em> is true, well-put, and available to any school in the country. Nothing in the line is ownable. What makes it Orchard Lake&rsquo;s is the proof underneath it: the lake, the 1885 brick, the chapel, the dormitory at 6:45 a.m., The Summit, a named faculty member, an alum three years out. So it becomes a hard rule rather than an aspiration &mdash; every post carries at least one thing no competitor could shoot.</p>
+
+      <div class="callout">
+        <h4>Before anything goes external</h4>
+        <p>Pin both EdChoice figures to the exact table and page they came from. An internal strategy deck can carry a summary; a public claim in a school&rsquo;s marketing cannot. If a number cannot be sourced in one click, it does not appear in a caption.</p>
+      </div>
+
+      <h3>The inputs this manual treats as locked</h3>
+      <p>A photographer receiving a Thursday brief should not have to read the strategy. These five are fixed for three years and everything downstream is built against them.</p>
+
+      <dl class="locked">
+        <div><dt>Campaign</dt><dd>What Happens Next?<small>The only public campaign line. Nothing is launched alongside it.</small></dd></div>
+        <div><dt>Promise</dt><dd>Prepare you for all of it<small>Appears verbatim, unchanged, as the resolution in every brand post.</small></dd></div>
+        <div><dt>Pillar I</dt><dd>What you know<small>Academic competence. Rigor, faculty, college-level work, AI literacy.</small></dd></div>
+        <div><dt>Pillar II</dt><dd>What you can do<small>Human capability. Speak, lead, prepare, fail, recover, advocate.</small></dd></div>
+        <div><dt>Pillar III</dt><dd>What guides you<small>Faith and judgment. Conscience, service, vocation, moral courage.</small></dd></div>
+      </dl>
+    </section>
+
+    <!-- 01 -->
+    <section id="order">
+      <div class="slate"><span class="code">01</span><span class="tag">Build order</span></div>
+      <h2>Two weeks of silent build, then thirteen weeks on air</h2>
+
+      <p>The single most common way this goes wrong is launching on an empty tank &mdash; posting the manifesto film on day one with nothing behind it, then improvising for twelve weeks. The campaign does not start when the first post goes up. It starts when three weeks of bank exists.</p>
+
+      <p>Keep posting business-as-usual through Week 0. Do not go dark and do not tease. Nothing about the current feed changes until launch day.</p>
+
+      <div class="tablewrap">
+        <table>
+          <thead>
+            <tr><th scope="col">Window</th><th scope="col">Task</th><th scope="col">Why it blocks launch</th><th scope="col">Owner</th></tr>
+          </thead>
+          <tbody>
+            <tr class="band"><td colspan="4">Week 0 &mdash; Aug 31 to Sep 11 &mdash; silent build</td></tr>
+            <tr><td class="num">Aug 31</td><td class="k">Baseline brand survey fielded</td><td>No pre-reading means no way to prove the campaign worked. Cannot be run retroactively.</td><td>Advancement</td></tr>
+            <tr><td class="num">Aug 31</td><td class="k">Media-release audit &mdash; every student</td><td>Boarding, international and minor consent gaps silently delete residential content, which is the most differentiating material available.</td><td>Registrar + Comms</td></tr>
+            <tr><td class="num">Sep 1</td><td class="k">&ldquo;Cleared to feature&rdquo; roster published</td><td>Photographers must be able to check a name in five seconds, in a hallway.</td><td>Registrar</td></tr>
+            <tr><td class="num">Sep 1</td><td class="k">Capture bank + naming convention live</td><td>Shared drive, franchise folders, <span class="mono">WK03_PROVEIT_lastname_01</span>. Unfiled footage is lost footage.</td><td>Editor</td></tr>
+            <tr><td class="num">Sep 2</td><td class="k">One template file. Red, crest, type locked.</td><td>Eight templates becomes eight campaigns by November.</td><td>Design</td></tr>
+            <tr><td class="num">Sep 2</td><td class="k">Summit question list obtained &mdash; full term</td><td>Knowing Wednesday&rsquo;s question three weeks out is the difference between shooting for it and scrambling after it.</td><td>Chaplaincy liaison</td></tr>
+            <tr><td class="num">Sep 3</td><td class="k">Six alumni recruited, three shoots booked</td><td>Alumni lead time is the binding constraint on the outcomes franchise &mdash; scheduling, not editing.</td><td>Alumni relations</td></tr>
+            <tr><td class="num">Sep 4&ndash;11</td><td class="k">Launch film shot and cut</td><td>The one post that must be finished, watched by six people, and re-cut before anyone sees it.</td><td>Editor</td></tr>
+            <tr><td class="num">Sep 4&ndash;11</td><td class="k">Three weeks of bank captured</td><td>Launch with 21 days queued or do not launch.</td><td>All three photographers</td></tr>
+            <tr class="band"><td colspan="4">Weeks 1&ndash;13 &mdash; Sep 14 to Dec 13 &mdash; on air</td></tr>
+            <tr><td class="num">Sep 14</td><td class="k">Launch, Monday</td><td>Film plus the first hero post. No explanation post, no &ldquo;introducing our new campaign.&rdquo;</td><td>Comms</td></tr>
+            <tr><td class="num">Oct 26</td><td class="k">Week 7 mid-flight read</td><td>Creative correction point. Slate and franchises hold; individual formats can be cut.</td><td>Comms + Advancement</td></tr>
+            <tr><td class="num">Dec 13</td><td class="k">Week 13 close &mdash; second survey wave</td><td>First real answer on whether the association is moving.</td><td>Advancement</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="note">
+        <p><strong>Dates are anchored to a Monday 14 September launch.</strong> Admissions milestones below &mdash; open houses, shadow days, application windows &mdash; are placeholders. Swap in the real admissions calendar before this schedule is issued to anyone; the theme sequence should bend around those dates, not the reverse.</p>
+      </div>
+    </section>
+
+    <!-- 02 -->
+    <section id="engine">
+      <div class="slate"><span class="code">02</span><span class="tag">Asset engine</span></div>
+      <h2>The bottleneck is capture, not posting</h2>
+
+      <p>Everyone building a campaign like this instinctively designs the posting calendar first. That is the wrong end. Posting is an hour a day. Capture is the constraint, and three photographers shooting to an event calendar will not produce this campaign &mdash; they will produce coverage of events, which is what the school already has.</p>
+
+      <p>The operational change is one sentence: <strong>photographers stop covering events and start filling briefs.</strong> A brief is issued Thursday for the following week. It names the theme, five specific shot assignments, the Wednesday Summit question, and which two of those five are banking rather than posting.</p>
+
+      <h3>Standing weekly capture quota</h3>
+      <p>Each franchise carries a fixed weekly requirement so the bank fills faster than it drains. Roughly a third of what is captured each week is deliberately banked, not posted.</p>
+
+      <div class="tablewrap">
+        <table>
+          <thead>
+            <tr><th scope="col">Franchise</th><th scope="col">Cadence</th><th scope="col">Capture cost</th><th scope="col">Notes</th></tr>
+          </thead>
+          <tbody>
+            <tr><td class="k">What Happens Next?</td><td class="num">1 / week</td><td class="num">~90 min edit</td><td>Assembled from bank. Rarely a dedicated shoot.</td></tr>
+            <tr><td class="k">Prove It</td><td class="num">2 / week</td><td class="num">2 &times; 60 min</td><td>One posts, one banks. The engine&rsquo;s core.</td></tr>
+            <tr><td class="k">The Summit</td><td class="num">1 / week</td><td class="num">25 min, 2 cams</td><td>Wednesday morning. Same-day turn.</td></tr>
+            <tr><td class="k">The Adult Who Noticed</td><td class="num">1 / 2 weeks</td><td class="num">20 min interview</td><td>Faculty, seated, one question, no lav-mic theatre.</td></tr>
+            <tr><td class="k">Then / Now / Next</td><td class="num">1 / month</td><td class="num">Archive + 30 min</td><td>Requires archive access. Book the archivist.</td></tr>
+            <tr><td class="k">The Work</td><td class="num">1 / week</td><td class="num">45 min</td><td>Classroom, lab, seminar. Marked-up paper, not laptops.</td></tr>
+            <tr><td class="k">After Orchard Lake</td><td class="num">1 / month</td><td class="num">Booked 3 wks out</td><td>Scheduling is the constraint. Always be recruiting.</td></tr>
+            <tr><td class="k">This Is Orchard Lake</td><td class="num">3 sessions / week</td><td class="num">Continuous</td><td>Ambient. Cheapest to shoot, first to be skipped, do not skip it.</td></tr>
+            <tr><td class="k">1885 &rarr; Next</td><td class="num">1 / 2 weeks</td><td class="num">Archive + match</td><td>Historic frame paired to a current student in the same place.</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>Roles</h3>
+      <p>Six named people. Not six committees.</p>
+      <ul>
+        <li><strong>Brief owner</strong> &mdash; comms director. Issues Thursday&rsquo;s brief. Owns the theme sequence. One person, permanently.</li>
+        <li><strong>Three photographers</strong> &mdash; assigned by franchise, not by event. One owns Prove It and The Work; one owns Summit and Adult Who Noticed; one owns This Is Orchard Lake and overflow.</li>
+        <li><strong>Editor</strong> &mdash; single pair of hands on every cut, which is how visual grammar actually stays consistent. Monday is edit day.</li>
+        <li><strong>Summit liaison</strong> &mdash; supplies the question list a term ahead and flags the weeks worth shooting.</li>
+        <li><strong>Admissions liaison</strong> &mdash; owns the activation slots only. Has no say over the brand slots.</li>
+        <li><strong>Approver</strong> &mdash; one person, 24-hour service level, four hours on Wednesdays. Not a committee, or the Summit turn is dead by week three.</li>
+      </ul>
+
+      <h3>The week</h3>
+      <div class="tablewrap">
+        <table>
+          <thead><tr><th scope="col">Day</th><th scope="col">What happens</th></tr></thead>
+          <tbody>
+            <tr><td class="num">Thu</td><td>Next week&rsquo;s brief issued: theme, five assignments, Summit question, bank targets.</td></tr>
+            <tr><td class="num">Fri&ndash;Wed</td><td>Capture window. Photographers shoot to brief; everything filed same day.</td></tr>
+            <tr><td class="num">Mon</td><td>Edit day. The full week is cut, captioned, approved and queued.</td></tr>
+            <tr><td class="num">Wed</td><td>Summit captured 8:27 a.m., posted by 4:00 p.m. The only same-day turn in the system.</td></tr>
+            <tr><td class="num">Fri</td><td>Weekly read: four metrics, ten minutes. Bank audit: days of queue remaining.</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="callout">
+        <h4>The bank rule</h4>
+        <p>Never drop below fourteen days of queued, approved posts. When the bank hits fourteen days, the following week&rsquo;s posting volume is cut &mdash; not the capture quota. Reducing output is recoverable. Posting filler is not, because filler is what teaches the audience the campaign was only a slogan.</p>
+      </div>
+    </section>
+
+    <!-- 03 -->
+    <section id="slate">
+      <div class="slate"><span class="code">03</span><span class="tag">Weekly slate</span></div>
+      <h2>A fixed slate, because seventy-thirty does not schedule</h2>
+
+      <p>A 70/30 brand-to-activation split is the right instinct and an unusable instruction. Nobody can execute a percentage on a Tuesday. Convert it to a fixed weekly slate with named slots, and the ratio falls out on its own &mdash; the activation slots are simply the ones admissions is allowed to claim during the two activation windows.</p>
+
+      <div class="tablewrap">
+        <table>
+          <thead>
+            <tr><th scope="col">Slot</th><th scope="col">Day</th><th scope="col">Channel</th><th scope="col">Franchise</th><th scope="col">Format</th></tr>
+          </thead>
+          <tbody>
+            <tr><td class="wk">A</td><td class="num">Mon</td><td class="k">Instagram + Facebook</td><td>What Happens Next?</td><td>Reel, 30&ndash;60s. The week&rsquo;s hero.</td></tr>
+            <tr><td class="wk">B</td><td class="num">Tue</td><td class="k">TikTok</td><td>Student reality</td><td>Native, unpolished, student-shot where possible.</td></tr>
+            <tr><td class="wk">C</td><td class="num">Wed</td><td class="k">Instagram + Facebook</td><td>The Summit</td><td>Reel, 20&ndash;30s. Same-day.</td></tr>
+            <tr><td class="wk">D</td><td class="num">Thu</td><td class="k">Instagram</td><td>Prove It</td><td>Reel or carousel. The proof slot.</td></tr>
+            <tr><td class="wk">E</td><td class="num">Thu</td><td class="k">LinkedIn</td><td>Capability credibility</td><td>Still + 120 words. Adults only.</td></tr>
+            <tr><td class="wk">F</td><td class="num">Fri</td><td class="k">Instagram + Facebook</td><td>This Is Orchard Lake</td><td>Carousel or single still. Belonging.</td></tr>
+            <tr><td class="wk">G</td><td class="num">Daily</td><td class="k">Instagram stories</td><td>Ambient + activation</td><td>10&ndash;14 / week. Where CTAs live outside windows.</td></tr>
+            <tr><td class="wk">H</td><td class="num">Monthly</td><td class="k">YouTube</td><td>After Orchard Lake / The Work</td><td>2&ndash;6 min. Deep proof.</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <p>That is roughly twelve original assets a week, which three photographers and one editor can genuinely sustain across a term. The temptation will be twenty-five. Twenty-five is how you get to filler by Halloween.</p>
+
+      <h3>What each channel is actually for</h3>
+      <ul>
+        <li><strong>Instagram</strong> &mdash; the main theater. Both audiences, prospective students and their parents, in one place.</li>
+        <li><strong>TikTok</strong> &mdash; student reality. Lower polish is a feature. If it looks like the Instagram cut, it will not work.</li>
+        <li><strong>Facebook</strong> &mdash; parents, grandparents, alumni. Outcomes and tradition travel here; student humor does not.</li>
+        <li><strong>YouTube</strong> &mdash; the destination for a family who is seriously considering and wants six minutes of evidence.</li>
+        <li><strong>LinkedIn</strong> &mdash; capability credibility to an adult audience. Also where faculty and partner organizations reshare, which is free reach into exactly the right households.</li>
+        <li><strong>X</strong> &mdash; no strategic energy unless there is a specific communications reason.</li>
+      </ul>
+    </section>
+
+    <!-- 04 -->
+    <section id="construction">
+      <div class="slate"><span class="code">04</span><span class="tag">Construction</span></div>
+      <h2>Question, human, proof, brand &mdash; with hard constraints</h2>
+
+      <p>The four-beat structure is right. On its own it is still too loose to hand to three people and expect consistency, so it gets constraints that can be checked in ten seconds by someone who is not a creative director.</p>
+
+      <ul>
+        <li>The question appears <strong>on screen in the first three words</strong>. No voiceover run-up, no logo bumper, no title card before it.</li>
+        <li><strong>No adjective in the first five seconds.</strong> Not one.</li>
+        <li>The resolution line appears in <strong>every</strong> brand post, unchanged. Never post an unresolved question &mdash; an open <em class="term">what happens next?</em> with no answer reads as anxiety, which is the one way this platform can turn against the school.</li>
+        <li>At least one thing <strong>only Orchard Lake could show</strong>. The lake, the brick, the chapel, the crest, the dorm, The Summit, a named face.</li>
+        <li>Caption is <strong>two sentences or fewer</strong> before the fold. No hashtag block.</li>
+        <li>CTAs appear <strong>only</strong> in the final frame, and only in an activation slot.</li>
+        <li><strong>Belonging posts carry no question and no resolution line.</strong> They are the other half of the argument &mdash; they answer <em class="term">will I want to live here for four years</em>, and dressing them in campaign furniture flattens both halves.</li>
+      </ul>
+
+      <div class="resolve">High school should prepare you for all of it.</div>
+
+      <h3>Four worked posts</h3>
+
+      <div class="spec">
+        <div class="spec-head"><span class="name">Launch film</span><span class="meta">Slot A &middot; Wk 01 &middot; Mon 14 Sep &middot; 60s</span></div>
+        <div class="spec-body">
+          <p class="beat"><b>Open</b> black, two seconds of room tone. <b>Type</b> WHAT HAPPENS NEXT? &mdash; then documentary cuts, one line per cut, no music until the fourth line.</p>
+          <div class="script">
+            <span>College is next.</span>
+            <span>Work is next.</span>
+            <span>Independence is next.</span>
+            <span>Hard decisions are next.</span>
+            <span>New relationships are next.</span>
+            <span>Living your faith without someone directing you is next.</span>
+          </div>
+          <p class="beat"><b>Resolve</b> full frame, held four seconds: HIGH SCHOOL SHOULD PREPARE YOU FOR ALL OF IT. <b>End</b> crest, small, lower right. Nothing else.</p>
+          <p class="caption-demo">Four years. Then all of it.</p>
+        </div>
+      </div>
+
+      <div class="spec">
+        <div class="spec-head"><span class="name">Prove It</span><span class="meta">Slot D &middot; Wk 10 &middot; 35s</span></div>
+        <div class="spec-body">
+          <p class="beat"><b>Type</b> What happens next when you&rsquo;re the youngest person in the room? <b>Cuts</b> student entering &rarr; sitting &rarr; speaking &rarr; an adult asks a follow-up &rarr; student answers &rarr; hands on prepared notes. No narration. Room audio only.</p>
+          <div class="script">
+            <span>You learn to speak before you&rsquo;re comfortable.</span>
+            <span>You learn to listen.</span>
+            <span>You learn to prepare.</span>
+            <span>Confidence comes after competence.</span>
+          </div>
+          <p class="beat"><b>Resolve</b> the line. <b>End</b> crest.</p>
+          <p class="caption-demo">A junior, presenting to people who could say no.</p>
+        </div>
+      </div>
+
+      <div class="spec">
+        <div class="spec-head"><span class="name">The Summit</span><span class="meta">Slot C &middot; Wednesday &middot; 25s &middot; same-day</span></div>
+        <div class="spec-body">
+          <p class="beat"><b>Card</b> THE SUMMIT &mdash; 8:27 A.M. <b>Type</b> the question, verbatim. <b>Body</b> eighteen seconds of the actual message, unedited, wide camera. <b>Cut</b> students leaving. No music tail, no swell, no explanation.</p>
+          <div class="script">
+            <span>&ldquo;What do you do when being honest costs you something?&rdquo;</span>
+          </div>
+          <p class="caption-demo">Knowing the right answer is different from choosing it when it costs you something. What happens next?</p>
+        </div>
+      </div>
+
+      <div class="spec">
+        <div class="spec-head"><span class="name">This Is Orchard Lake</span><span class="meta">Slot F &middot; Friday &middot; carousel, 7 stills</span></div>
+        <div class="spec-body">
+          <p class="beat"><b>Seven frames from one Friday.</b> No type on any image. No question, no resolution line, no crest lockup. Lake, hallway, a bus, a dirty uniform, a full lunch table, the last ten seconds before kickoff, the walk back.</p>
+          <p class="caption-demo">Friday. October. Orchard Lake.</p>
+        </div>
+      </div>
+
+      <div class="note">
+        <p><strong>The contrast that matters.</strong> Everything above is advertising. <em class="term">&ldquo;Our students had an amazing opportunity today to visit XYZ Company! Thank you to everyone who made this wonderful experience possible!&rdquo;</em> is an institutional newsletter accidentally posted to Instagram. The difference is not budget or talent. It is whether a rule stopped it.</p>
+      </div>
+    </section>
+
+    <!-- 05 -->
+    <section id="calendar">
+      <div class="slate"><span class="code">05</span><span class="tag">Thirteen weeks</span></div>
+      <h2>September to December, on one page</h2>
+
+      <p>Themes run in four-week blocks so that repetition can accumulate. The hero question changes weekly; the underlying idea does not. By roughly week six a parent should start anticipating the construction before the logo appears, which is the first real evidence the platform is working.</p>
+
+      <div class="tablewrap">
+        <table>
+          <thead>
+            <tr>
+              <th scope="col">Wk</th><th scope="col">Dates</th><th scope="col">Theme</th>
+              <th scope="col">Hero question &mdash; Slot A</th><th scope="col">Prove It &mdash; Slot D</th>
+              <th scope="col">Summit &mdash; Slot C</th><th scope="col">Activation</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="band"><td colspan="7">Block one &mdash; Responsibility</td></tr>
+            <tr><td class="wk">01</td><td class="num">Sep 14&ndash;20</td><td class="phase">Responsibility</td><td class="q">What happens next when nobody reminds you?</td><td>Boarding student, 6:15&ndash;7:30 a.m., unnarrated</td><td class="q">Who is counting on you this week?</td><td>&mdash; brand only</td></tr>
+            <tr><td class="wk">02</td><td class="num">Sep 21&ndash;27</td><td class="phase">Responsibility</td><td class="q">What happens next when the schedule is yours to build?</td><td>Student mapping a three-week plan on a whiteboard</td><td class="q">What do you do when no one checks?</td><td>Visit CTA, stories only</td></tr>
+            <tr><td class="wk">03</td><td class="num">Sep 28&ndash;Oct 4</td><td class="phase">Responsibility</td><td class="q">What happens next when you&rsquo;re the one who has to be there?</td><td>Captain running warm-ups, no coach present</td><td class="q">What does showing up actually cost you?</td><td>Open house registration opens</td></tr>
+            <tr><td class="wk">04</td><td class="num">Oct 5&ndash;11</td><td class="phase">Responsibility</td><td class="q">What happens next when you drop it?</td><td>Failed lab, redone; faculty watching, not helping</td><td class="q">What do you do the day after you fail?</td><td>Open house push</td></tr>
+            <tr class="band"><td colspan="7">Block two &mdash; Judgment</td></tr>
+            <tr><td class="wk">05</td><td class="num">Oct 12&ndash;18</td><td class="phase">Judgment</td><td class="q">What happens next when there isn&rsquo;t one right answer?</td><td>Theology seminar that reaches no consensus</td><td class="q">How do you decide when both options are defensible?</td><td>Open house &middot; retarget</td></tr>
+            <tr><td class="wk">06</td><td class="num">Oct 19&ndash;25</td><td class="phase">Judgment</td><td class="q">What happens next when AI answers in five seconds?</td><td>Student checks the model against a source and finds it wrong</td><td class="q">If a machine can answer it, what is your job?</td><td>Shadow day</td></tr>
+            <tr><td class="wk">07</td><td class="num">Oct 26&ndash;Nov 1</td><td class="phase">Judgment</td><td class="q">What happens next when everyone else has already decided?</td><td>Debate, holding the dissenting position</td><td class="q">When is agreement the easy way out?</td><td>Applications open &middot; <b>mid-flight read</b></td></tr>
+            <tr><td class="wk">08</td><td class="num">Nov 2&ndash;8</td><td class="phase">Judgment</td><td class="q">What happens next when the honest answer costs you?</td><td>A service placement decision, made badly then well</td><td class="q">What do you do when being honest costs you something?</td><td>Application push</td></tr>
+            <tr class="band"><td colspan="7">Block three &mdash; Communication</td></tr>
+            <tr><td class="wk">09</td><td class="num">Nov 9&ndash;15</td><td class="phase">Communication</td><td class="q">What happens next when your idea has to survive questions?</td><td>Research defended live in Q&amp;A</td><td class="q">Can you explain what you believe to someone who disagrees?</td><td>Deadline runway</td></tr>
+            <tr><td class="wk">10</td><td class="num">Nov 16&ndash;22</td><td class="phase">Communication</td><td class="q">What happens next when you&rsquo;re the youngest person in the room?</td><td>Student inside a professional meeting</td><td class="q">What do you say when you&rsquo;re the least experienced person there?</td><td>Deadline minus 30</td></tr>
+            <tr><td class="wk">11</td><td class="num">Nov 23&ndash;29</td><td class="phase">Communication</td><td class="q">What happens next when you have to ask for something?</td><td>Real college-interview preparation with a counselor</td><td class="q">What do you do when you need help and don&rsquo;t want to ask?</td><td>Light week &mdash; belonging heavy</td></tr>
+            <tr><td class="wk">12</td><td class="num">Nov 30&ndash;Dec 6</td><td class="phase">Communication</td><td class="q">What happens next when someone needs it explained again?</td><td>Peer tutoring, the second explanation</td><td class="q">Who needs you to be patient this week?</td><td>Deadline push</td></tr>
+            <tr class="band"><td colspan="7">Block four &mdash; Close</td></tr>
+            <tr><td class="wk">13</td><td class="num">Dec 7&ndash;13</td><td class="phase">Outcomes</td><td class="q">What happens next? Ask the ones who left.</td><td>Alumni: first semester, first job, first year out</td><td class="q">What are you carrying into the next four years?</td><td>Decision window &middot; <b>survey wave two</b></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <p>Weeks 14 onward continue the same construction through independence, courage, work, failure, faith, relationships and leadership. The themes are inexhaustible because the format generates them &mdash; which is the actual argument for this platform over a conventional tagline.</p>
+    </section>
+
+    <!-- 06 -->
+    <section id="summit">
+      <div class="slate"><span class="code">06</span><span class="tag">Summit pipeline</span></div>
+      <h2>8:27 a.m. to 4:00 p.m., every Wednesday</h2>
+
+      <p>The Summit is the strongest single asset in the campaign because it is the one thing here that is genuinely hard to copy: evidence that the school deliberately talks with adolescents about consequential things, in a room, every morning. Handled wrong it becomes motivational clips, which is worth nothing. Handled right it makes faith legible as an operating system for action rather than a crucifix with a quotation over it.</p>
+
+      <p>The whole thing depends on a same-day turn, and a same-day turn depends entirely on removing approval friction in advance.</p>
+
+      <div class="tablewrap">
+        <table>
+          <thead><tr><th scope="col">Time</th><th scope="col">Step</th></tr></thead>
+          <tbody>
+            <tr><td class="num">T&minus;3 wks</td><td>Question list received for the term. Comms flags the three or four weeks worth shooting.</td></tr>
+            <tr><td class="num">T&minus;1 day</td><td>Question confirmed. Caption drafted <b>before</b> capture &mdash; if the turn cannot be written in advance, that week is not shootable.</td></tr>
+            <tr><td class="num">8:20</td><td>Two cameras set. One locked wide on the room, one roving on faces. Audio off the house system, never a shotgun mic from the back.</td></tr>
+            <tr><td class="num">8:27</td><td>Capture. Full message recorded; only 18&ndash;25 seconds will ever be used.</td></tr>
+            <tr><td class="num">8:50</td><td>Students leaving. This shot is not optional &mdash; it is what makes the post feel like a real morning rather than a produced clip.</td></tr>
+            <tr><td class="num">11:00</td><td>Cut delivered. Card, question, message, exit. No music.</td></tr>
+            <tr><td class="num">13:00</td><td>Approval. Four-hour standing window, one approver, pre-agreed.</td></tr>
+            <tr><td class="num">16:00</td><td>Live on Instagram and Facebook. Stories carry the question alone, no video.</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="callout">
+        <h4>Three rules that keep it from turning into content</h4>
+        <p>Never post the whole talk. Never add music. Never let the caption summarize the message &mdash; the caption turns it back on the viewer, which is the entire mechanism.</p>
+      </div>
+    </section>
+
+    <!-- 07 -->
+    <section id="shotlist">
+      <div class="slate"><span class="code">07</span><span class="tag">Shot list</span></div>
+      <h2>Documentary grammar, and the shots that are banned</h2>
+
+      <p>The visual system is doing two jobs at once: accumulating recognition through five repeated distinctive assets, and making a parent feel they briefly entered the building. The banned list matters as much as the standing list, because school photography defaults are strong and they will reassert themselves within about a month unless they are written down.</p>
+
+      <div class="split">
+        <div class="yes">
+          <h4>Standing list &mdash; get every week</h4>
+          <ul>
+            <li>Hands working &mdash; tools, instruments, pens, equipment</li>
+            <li>A face mid-thought, not mid-smile</li>
+            <li>A teacher leaning into a conversation</li>
+            <li>Marked-up paper, actual handwriting, red ink</li>
+            <li>Students walking between buildings, weather visible</li>
+            <li>A dirty uniform after, not a clean one before</li>
+            <li>One student alone, preparing</li>
+            <li>A group arguing through a problem</li>
+            <li>The quiet thirty seconds before something begins</li>
+            <li>The lake or the 1885 brick in frame at least once per post</li>
+          </ul>
+        </div>
+        <div class="no">
+          <h4>Banned &mdash; do not shoot, do not post</h4>
+          <ul>
+            <li>Posed lineups, arms around shoulders, everybody smiling at the lens</li>
+            <li>Thumbs up. Peace signs. Waving at the camera.</li>
+            <li>Students staring at laptops as a stand-in for &ldquo;academics&rdquo;</li>
+            <li>Empty hallway &ldquo;aesthetic&rdquo; filler with no person in it</li>
+            <li>The podium-and-microphone wide shot</li>
+            <li>A crucifix with a generic quotation over it</li>
+            <li>Cheque presentations, ribbon cuttings, grip-and-grins</li>
+            <li>Any image that needs a caption to explain what is happening</li>
+          </ul>
+        </div>
+      </div>
+
+      <h3>The five distinctive assets</h3>
+      <p>These recur until they are recognized without the logo. That is the whole point of distinctive assets, and it takes longer than anyone is comfortable with.</p>
+      <ul>
+        <li><strong>OLS red</strong> &mdash; as a system colour on rules, labels and type. Not as full-bleed red templates.</li>
+        <li><strong>The crest</strong> &mdash; small, lower right, an authentication mark rather than a headline.</li>
+        <li><strong>The lake and campus horizon</strong> &mdash; place is part of the product and competitors cannot rent it.</li>
+        <li><strong>Historic brick and chapel architecture</strong> &mdash; permanence, which is what &ldquo;1885&rdquo; actually buys.</li>
+        <li><strong>WHAT HAPPENS NEXT? typography</strong> &mdash; one weight, one case, one position. Every time.</li>
+      </ul>
+    </section>
+
+    <!-- 08 -->
+    <section id="governance">
+      <div class="slate"><span class="code">08</span><span class="tag">Governance</span></div>
+      <h2>Three tests and one kill rule</h2>
+
+      <p>Consistency at this level is not a matter of taste or talent. It is a matter of having a short, checkable rule that a busy person can apply at 4:45 on a Thursday without convening anyone.</p>
+
+      <div class="tests">
+        <div class="test"><span class="t">Adjective</span><p>Read the first five seconds. If it contains <em class="term">excellent, dedicated, amazing, incredible, proud, vibrant, transformative</em> or <em class="term">wonderful</em>, it does not run. Everyone owns those words, which means nobody does.</p></div>
+        <div class="test"><span class="t">Attributability</span><p>Cover the crest. Could this be any other school? If yes, it does not run. The promise is a category argument; only the proof is Orchard Lake&rsquo;s.</p></div>
+        <div class="test"><span class="t">Newsletter</span><p>Does it thank someone, announce an opportunity, or celebrate the school&rsquo;s own generosity? Then it is an internal communication. Send it internally.</p></div>
+      </div>
+
+      <div class="callout">
+        <h4>The kill rule</h4>
+        <p>If a post could run on a competitor&rsquo;s feed with only the logo swapped, it does not run at all. Not reworked, not softened &mdash; killed. The bank exists so that killing a post costs nothing.</p>
+      </div>
+
+      <h3>Stop doing</h3>
+      <ul>
+        <li>Thank-you posts and recognition posts &mdash; move to email and the parent portal</li>
+        <li>Multi-photo event dumps &mdash; the seven best frames or none</li>
+        <li>Quote cards on branded backgrounds</li>
+        <li>Holiday and birthday template graphics</li>
+        <li>Any sentence beginning &ldquo;We are proud to&hellip;&rdquo;</li>
+        <li>Announcing the campaign. The campaign is demonstrated, never introduced.</li>
+      </ul>
+
+      <h3>Tone</h3>
+      <p>The school should sound confident enough not to praise itself. <em class="term">We are proud to develop exceptional leaders</em> becomes <strong>Somebody eventually stops reminding you.</strong> <em class="term">Our dedicated faculty prepare students for success</em> becomes <strong>One day the teacher isn&rsquo;t in the room.</strong> The second version in each pair is a serious brand. The first is school marketing, and every family has already learned to skip it.</p>
+    </section>
+
+    <!-- 09 -->
+    <section id="measure">
+      <div class="slate"><span class="code">09</span><span class="tag">Measurement</span></div>
+      <h2>Four numbers weekly, one number that decides it</h2>
+
+      <p>Followers are close to worthless here and will be the first thing someone reports. The campaign is trying to install an association in the heads of families who have not yet chosen a school, so the measurement has to run at four levels, and only the last one settles the question.</p>
+
+      <div class="tablewrap">
+        <table>
+          <thead><tr><th scope="col">Level</th><th scope="col">Measure</th><th scope="col">Read</th><th scope="col">What a bad number means</th></tr></thead>
+          <tbody>
+            <tr><td class="k">Attention</td><td>Non-follower reach share, video completion, saves, shares</td><td class="num">Weekly</td><td>The creative is not travelling beyond the existing community.</td></tr>
+            <tr><td class="k">Interest</td><td>Profile visits, site visits, admissions-page visits, repeat viewers</td><td class="num">Weekly</td><td>It travels but does not provoke a next step. Usually a CTA-placement problem, not a creative one.</td></tr>
+            <tr><td class="k">Action</td><td>Inquiries, tour and open-house registrations, application starts</td><td class="num">Monthly</td><td>Interest is not converting. Check the activation slots, not the brand slots.</td></tr>
+            <tr><td class="k">Association</td><td>Attribute ranking vs. named cross-shop schools</td><td class="num">Per term</td><td>The campaign is not yet in anyone&rsquo;s head. This is the only one that decides whether it worked.</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>The Friday four</h3>
+      <p>Ten minutes, every Friday, one screen. Non-follower share of reach; three-second-to-completion rate; saves plus shares per post; profile-to-site clicks. Anything else is a monthly conversation.</p>
+      <p>The most diagnostic of the four is <strong>non-follower share of reach</strong>. If by week six the majority of reach is still coming from people who already follow the school, the creative is not travelling and the format needs work &mdash; regardless of how good the engagement looks.</p>
+
+      <h3>The survey instrument</h3>
+      <p>Field it in Week 0, again in Week 13, then each term. Same list, same order, same audiences: current inquiry list, current families, and &mdash; most usefully &mdash; families who inquired last cycle and enrolled elsewhere.</p>
+      <p>Ask which school best fits each attribute, with Orchard Lake sitting in a list beside the schools families actually cross-shop: <em class="term">academics; athletics; college admission; Catholic faith; prestige; community; prepares students for adulthood; develops independent thinkers; builds character and judgment.</em></p>
+
+      <div class="callout">
+        <h4>The number that decides it</h4>
+        <p><strong>Movement on &ldquo;prepares students for adulthood&rdquo; and &ldquo;ready for life after high school,&rdquo; relative to named competitors, six months in.</strong> Reach and engagement are inputs. This is the outcome, and it is the only one worth defending a three-year budget with.</p>
+      </div>
+    </section>
+
+    <!-- 10 -->
+    <section id="paid">
+      <div class="slate"><span class="code">10</span><span class="tag">Paid layer</span></div>
+      <h2>Spend behind what already worked</h2>
+
+      <p>This is the one structural addition to the strategy as written. Shifting a category association among families who do not yet follow the school is a reach problem, and organic distribution will not solve a reach problem on its own.</p>
+
+      <p>Four rules, whatever the budget turns out to be.</p>
+
+      <ul>
+        <li><strong>Never boost a new asset.</strong> Promote only proven organic performers &mdash; the top two each month by completion rate and saves. Paid amplifies a signal; it does not create one.</li>
+        <li><strong>Two assets a month, not ten.</strong> Concentration is what produces frequency, and frequency is what produces recognition.</li>
+        <li><strong>Geo-fence tightly</strong> around the actual catchment, plus lookalikes built from the inquiry list rather than from page followers.</li>
+        <li><strong>Retarget site visitors only during activation windows.</strong> Outside those windows, paid runs brand-side and carries no CTA at all.</li>
+      </ul>
+
+      <p>Split the money roughly three-to-one brand to activation, mirroring the organic slate. The instinct under budget pressure will be to move everything to application-deadline retargeting, which buys the applications that were already coming and none of the ones that were not.</p>
+    </section>
+
+    <!-- 11 -->
+    <section id="fail">
+      <div class="slate"><span class="code">11</span><span class="tag">Failure modes</span></div>
+      <h2>Where this actually breaks</h2>
+
+      <ol class="risks">
+        <li><b>The product doesn&rsquo;t get built</b><span>The campaign is a window into a differentiated education. If The Summit, the mentoring, the public presentation, the real work experiences and eventually a graduate record are not operationalized, this is a slogan with good typography &mdash; and families detect that faster than schools expect. Cristo Rey can say <em class="term">The School That Works</em> because it built the work system first.</span></li>
+        <li><b>Week five</b><span>The bank empties, the brief stops being issued, and event coverage returns. Guard: the fourteen-day bank rule, and cutting posting volume rather than posting filler.</span></li>
+        <li><b>The approver goes on holiday</b><span>The Wednesday same-day turn dies, The Summit becomes a Friday post, and the strongest asset in the campaign loses the thing that made it feel live. Name a deputy in Week 0.</span></li>
+        <li><b>A second line appears</b><span>Someone adds a tagline for the gala, the capital campaign or athletics by Thanksgiving, and the architecture quietly reverts to eight competing messages. The line is fixed for three years or it is not a campaign.</span></li>
+        <li><b>Consent gaps</b><span>Residential and international students turn out not to be cleared, and the most differentiating content in the whole system silently disappears from the feed. This is why the audit is a Week 0 blocker, not a Week 4 task.</span></li>
+        <li><b>Victory by follower count</b><span>Reach looks healthy, followers climb, nobody fields the survey, and in year two there is no evidence to defend the budget with. The baseline in Week 0 is the insurance policy.</span></li>
+      </ol>
+
+      <div class="resolve">Build the proof. Then show it every day.</div>
+    </section>
+
+  </main>
+
+  <footer>
+    <span>Orchard Lake St. Mary&rsquo;s</span>
+    <span>What Happens Next? &mdash; 90-day build</span>
+    <span>Wk 00&ndash;13 &middot; Aug 31 &ndash; Dec 13, 2026</span>
+  </footer>
+
+</div>
