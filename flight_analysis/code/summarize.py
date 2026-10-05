@@ -51,9 +51,9 @@ fig, ax = plt.subplots(figsize=(10, 4.6))
 lo, mid, hi = (np.nanpercentile(np.where(np.isnan(Zs), -1, Zs), q, axis=0) for q in (10, 50, 90))
 ax.fill_between(grid, np.clip(lo, 0, None), np.clip(hi, 0, None), color=C1, alpha=0.22, lw=0, label='10th–90th pct trajectory band')
 ax.plot(grid, np.where(mid > 0, mid, np.nan), color=C1, lw=2, label='Median trajectory')
-for D, lab in ((200, '200'), (220, '220'), (225, '225')):
-    ax.add_patch(plt.Rectangle((D-0.8, 0), 1.6, 6, color=INK2, alpha=0.35, lw=0)); ax.plot([D, D], [6, 8], color=INK2, lw=1, ls=':')
-    ax.text(D, 9, f'{lab}-ft ref. fence\n(4–8 ft)', ha='center', va='bottom', fontsize=8, color=INK2)
+for D, lab, ty in ((200, '200', 9), (220, '220', 16), (225, '225', 9)):
+    ax.add_patch(plt.Rectangle((D-0.8, 0), 1.6, 6, color=INK2, alpha=0.35, lw=0)); ax.plot([D, D], [6, ty-0.5], color=INK2, lw=0.8, ls=':')
+    ax.text(D + (3 if D == 225 else 0), ty, f'{lab} ft' + ('\nref. fences\n(4–8 ft tall)' if D == 220 else ''), ha='center', va='bottom', fontsize=8, color=INK2)
 dlo, dhi = R['D_fence']['p10'], R['D_fence']['p90']; ax.add_patch(plt.Rectangle((dlo, 0), dhi-dlo, 6, color=C2, alpha=0.6, lw=0)); ax.text((dlo+dhi)/2, 9, f'Actual fence\n{dlo:.0f}–{dhi:.0f} ft', ha='center', fontsize=8, color=INK)
 cv = A('carry'); ax.hist(cv, bins=60, range=(100, 260), weights=np.full(len(cv), 300/len(cv)), color=C3, alpha=0.7, label='Landing distance (MC density, scaled)')
 ax.set_xlim(0, 262)
@@ -72,7 +72,8 @@ for y, (name, d) in enumerate(items):
 ax.set_yticks(range(len(items))); ax.set_yticklabels([n for n, _ in items], fontsize=8.5)
 ax.axvline(0, color=INK2, lw=1); ax.set_xlabel(f'Change in projected carry vs nominal ({base:.0f} ft)')
 ax.set_title('Tornado: one-at-a-time swings (full refit each)', loc='left', fontsize=12)
-ax.barh([], [], color=C1, label='low value of input'); ax.barh([], [], color=C2, label='high value of input'); ax.legend(frameon=False, loc='lower right', fontsize=9)
+from matplotlib.patches import Patch
+ax.legend(handles=[Patch(color=C1, label='low value of input'), Patch(color=C2, label='high value of input')], frameon=False, loc='lower right', fontsize=9)
 fig.tight_layout(); fig.savefig(f'{OUT}/fig_tornado_carry.png', dpi=150); plt.close(fig)
 
 # ---------- Figure: timing diagram ----------

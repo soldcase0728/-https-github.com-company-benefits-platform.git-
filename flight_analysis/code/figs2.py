@@ -44,6 +44,7 @@ ax[1].axhline(0, color='#52514e', lw=1); ax[1].set_xlabel('PTS (s)'); ax[1].set_
 ax[1].set_title(f'Reprojection residuals (RMS {np.sqrt(np.mean((U-P)**2)):.2f} px)', loc='left')
 fig.tight_layout(); fig.savefig(f'{OUT}/fig_track_reprojection.png', dpi=150); plt.close(fig)
 # --- spray line on the aerial
+MC = json.load(open(f'{OUT}/mc2_samples.json'))
 A_ = cv2.imread(f'{OUT}/aerial.png'); sc = FD.scale_infield()[0]
 def to_px(X, Y): return FD.PLATE + (np.asarray(X)[..., None]*FD.C_HAT + np.asarray(Y)[..., None]*FD.Y_HAT)*sc
 ph = np.radians(R['phi']['median']); Df = FD.fence_D(R['phi']['median'], sc)
