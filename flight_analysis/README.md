@@ -18,7 +18,7 @@ Tags: **MEASURED** = taken from the video, aerial or weather record. **ASSUMED**
 |---|---|---|---|
 | 1 | Fly or bounce? | **Bounce.** P(fly to fence) = 0/5,000 Monte Carlo draws. Forcing a landing within 20 ft of the fence raises track misfit by Δχ² = 60–75. | MEASURED track + aerial calibration |
 | 2a | Where did it reach the fence? | Spray 12.4° R (80%: 11.5–13.2°). Landing azimuth 13.6° (crosswind drift). This is the yellow-line fence bend, **D = 252 ft** (80%: 249–255). | MEASURED (aerial D(φ)) |
-| 2b | When did it reach the fence? | Landing at PTS 7.97 s (80%: 7.90–8.05), hang time **2.93 s** (80%: 2.85–3.01). Fence arrival = landing + roll time, and the roll was **not observable**. ~88 ft of turf roll from ~47 ft/s plausibly takes 2–3 s, so arrival ≈ 10–11 s. That figure is a rough model estimate, not a measurement. | MEASURED landing time; roll time unmeasured |
+| 2b | When did it reach the fence? | Landing at PTS 7.97 s (80%: 7.90–8.05), hang time **2.93 s** (80%: 2.85–3.01). With your **3.6 s roll**, it reached the fence at **PTS ≈ 11.6 s** (80%: 11.3–11.8), **≈6.5 s after contact**. The ball isn't visible at that moment, but from ~11.2 s two fielders are seen stationary at the wall on the spray line. | Landing from model + track; roll time USER-SUPPLIED |
 | 2c | How high on the fence? | Not measurable. The ball arrived bouncing or rolling, so near ground level. | — |
 | 3 | Trajectory | EV **54.9 mph** (48.0–63.1) · LA **26.7°** (25.7–27.8) · apex **27.2 ft** (24.4–30.5) at 88 ft, 1.40 s after contact · hang **2.93 s** · lands at 40 mph, descending 36° | Method B fit; spin-limited (see §Uncertainty) |
 | 4 | Carry with no fence | **164 ft** (80%: 142–190; 90%: 137–196), from the plate apex | Model + MEASURED track |
@@ -26,9 +26,11 @@ Tags: **MEASURED** = taken from the video, aerial or weather record. **ASSUMED**
 
 > **For public use** (highlight or recruiting graphic), quote only the measured facts plus the 10th-percentile carry, rounded down: *"Line drive into the right-center gap (~13° right of center), landed ~140+ ft out and rolled to the 250-ft fence for a triple."* Don't quote EV as a measured number; it depends mainly on assumed spin.
 
-## Your 0.4 s roll estimate vs. the video
+## Roll time: your 3.6 s vs. the earlier 0.4 s
 
-A 0.4 s roll implies landing ≈20 ft short of the fence (≈230–235 ft). The video says otherwise, robustly:
+**3.6 s is consistent with the video.** The model lands the ball ≈88 ft (62–111) short of the fence, so 3.6 s means an average roll speed of ≈24 ft/s (17–31). The ball lands moving ≈47 ft/s horizontally. A first bounce that keeps 55–80% of that (≈32 ft/s), then a turf deceleration of ≈4 ft/s² (rolling friction ≈0.13), covers 88 ft in 3.6 s and reaches the wall at ≈17 ft/s. Those are physically ordinary numbers.
+
+The earlier **0.4 s** estimate was not consistent. It implied landing ≈20 ft short of the fence (≈230–235 ft), and the video robustly rules that out:
 
 | Case | Free fit landing | Forced landing (D − 20 ± 8 ft) | Track χ² free → forced | Δχ² |
 |---|---|---|---|---|
@@ -60,7 +62,7 @@ A possible reconciliation, not measured: a ball landing at ~40 mph and a 36° de
 | Ball | 12.0 in, 0.184 kg | legal range | ASSUMED | absorbed in C_D range |
 | Contact point | 2.0 ft fwd, 0.3 ft lateral, 2.5 ft high (priors) | 0.75 / 0.7 / 0.5 | ASSUMED | fitted 2.2 / 0.3 / 2.1 ft |
 | Fence height | 4–8 ft | uniform | ASSUMED | only used for the "cleared?" test |
-| Eyewitness roll | 0.4 s | — | USER-SUPPLIED | tested; inconsistent; not used |
+| Roll time, landing → fence | 3.6 s | ±0.2 assumed | USER-SUPPLIED | used for fence-arrival time; consistent with model (an earlier 0.4 s was not) |
 
 ## Results (5,000-draw Monte Carlo, seed 20261003, rejection rate 0.0%)
 

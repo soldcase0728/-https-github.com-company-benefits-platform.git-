@@ -84,9 +84,10 @@ ax.axvline(5.086, color=C2, lw=1.5); ax.text(5.10, 2.4, 'Bat-crack audio\n5.086 
 tr = json.load(open(f'{OUT}/ball_track.json')); tt = [d['t'] for d in tr]
 ax.plot(tt, [1.6]*len(tt), '|', color=C1, ms=10); ax.text(5.2, 1.85, f'Ball tracked: {len(tt)} frames, {tt[0]:.3f}–{tt[-1]:.3f} s', fontsize=8)
 ax.axvspan(tl['p10'], tl['p90'], color=C3, alpha=0.3, lw=0); ax.text((tl['p10']+tl['p90'])/2, 0.9, f"Modeled landing\n{tl['median']:.2f} s (10–90%)", ha='center', fontsize=8)
-ax.annotate('Fence arrival (after bounce/roll):\nNOT measurable in this clip', xy=(9.0, 0.4), fontsize=8, color=INK2)
+fa0, fa1 = tl['p10'] + 3.6, tl['p90'] + 3.6
+ax.axvspan(fa0 - 0.2, fa1 + 0.2, color=C2, alpha=0.25, lw=0); ax.text((fa0+fa1)/2, 2.6, f"Fence arrival\n≈{tl['median']+3.6:.1f} s\n(landing + 3.6 s roll,\nuser-supplied)", ha='center', fontsize=8)
+ax.annotate('', xy=(fa0, 1.2), xytext=(tl['median'], 1.2), arrowprops=dict(arrowstyle='->', color=INK2, lw=1)); ax.text((tl['median']+fa0)/2, 1.35, 'bounce/roll ≈88 ft', ha='center', fontsize=8, color=INK2)
 pts = json.load(open('/tmp/claude-0/pts_live.json')) if os.path.exists('/tmp/claude-0/pts_live.json') else None
-ax.axvspan(tl['median']+0.25, tl['median']+0.55, color=C2, alpha=0.18, lw=0); ax.text(tl['median']+0.4, 2.9, 'Fence arrival if\n0.4 s roll (eyewitness)\n— inconsistent w/ video', ha='center', fontsize=7.5, color=INK2)
-ax.set_xlim(4.6, 10.5); ax.set_ylim(0, 4); ax.set_yticks([]); ax.set_xlabel('Video PTS (s)')
-ax.set_title(f"Timing: contact {tc['median']:.3f} s (fit), hang time to landing {R['hang']['median']:.2f} s", loc='left', fontsize=12)
+ax.set_xlim(4.6, 12.6); ax.set_ylim(0, 4); ax.set_yticks([]); ax.set_xlabel('Video PTS (s)')
+ax.set_title(f"Timing: contact {tc['median']:.2f} s, landing {tl['median']:.2f} s (hang {R['hang']['median']:.2f} s), fence ≈{tl['median']+3.6:.1f} s", loc='left', fontsize=12)
 fig.tight_layout(); fig.savefig(f'{OUT}/fig_timing_diagram.png', dpi=150); plt.close(fig)

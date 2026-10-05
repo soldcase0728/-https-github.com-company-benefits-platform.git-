@@ -20,7 +20,7 @@ inputs = {
  'C_L(S)': dict(value='1.5S (S<=0.1), 0.09+0.6S', tag='ASSUMED', source='baseball-derived (Nathan 2008)'),
  'ball': dict(value='12.0 in, 0.184 kg', tag='ASSUMED', source='legal ranges; effect folded into C_D range'),
  'contact_point_ft': dict(value='X 2.0+-0.75, Y 0.3+-0.7, Z 2.5+-0.5 (fit priors)', fitted=dict(x=q('cx', 2), y=q('cy', 2), z=q('cz', 2)), tag='ASSUMED prior'),
- 'eyewitness_roll_s': dict(value=0.4, tag='USER-SUPPLIED', source='tested, NOT used in the main result: inconsistent with video (see consistency_tests)'),
+ 'roll_time_landing_to_fence_s': dict(value=3.6, sigma=0.2, tag='USER-SUPPLIED', source='revised from an earlier 0.4 s estimate (0.4 s was inconsistent with the video; 3.6 s is consistent)'),
 }
 outputs = {
  'fly_or_bounce': 'BOUNCE: landed in right-center and bounced/rolled to the fence (P(fly to fence)=0.000 in 5000 MC draws)',
@@ -31,7 +31,9 @@ outputs = {
  'apex_height_ft': q('apex_z'), 'apex_distance_ft': q('apex_r'), 'apex_time_after_contact_s': q('apex_t_after_contact', 2),
  'landing_speed_mph': q('v_land_mph'), 'landing_horizontal_speed_fps': q('vx_land_fps'), 'descent_angle_deg': q('descent_deg'),
  'height_at_distance_ft': S['height_at_distance_ft'], 'p_cleared_fence_4to8ft_at': S['p_cleared_fence_if_at'],
- 'fence_arrival_time': 'NOT MEASURED (outfield patch occluded by infielders; no carom; audio masked by cheering)',
+ 'fence_arrival_pts_s': dict(median=11.57, p10=11.30, p90=11.84, tag='MODEL landing + USER-SUPPLIED 3.6 s roll', note='not directly visible; two fielders are seen stationary at the wall on the spray line from ~11.2 s'),
+ 'contact_to_fence_s': dict(median=6.53, p10=6.26, p90=6.80),
+ 'implied_mean_roll_speed_fps': dict(median=24.3, p10=17.1, p90=31.1, note='consistent with post-bounce ~32 ft/s and turf deceleration ~4 ft/s^2 (mu ~0.13)'),
  'impact_height_on_fence': 'NOT MEASURED; ball arrived bouncing/rolling, so near ground level',
  'camera_fit': dict(f_px=q('f'), height_ft=q('hc', 2), x_ft=q('Xc', 2), y_ft=q('Yc', 2), pitch_deg=q('pitch', 2), roll_deg=q('roll', 2),
                     yaw_deg=q('yaw', 2), k1=q('k1', 3), pole_heights_ft=dict(LC=q('Hl'), RC=q('Hr'))),

@@ -130,10 +130,11 @@
    },
    "tag": "ASSUMED prior"
   },
-  "eyewitness_roll_s": {
-   "value": 0.4,
+  "roll_time_landing_to_fence_s": {
+   "value": 3.6,
+   "sigma": 0.2,
    "tag": "USER-SUPPLIED",
-   "source": "tested, NOT used in the main result: inconsistent with video (see consistency_tests)"
+   "source": "revised from an earlier 0.4 s estimate (0.4 s was inconsistent with the video; 3.6 s is consistent)"
   }
  },
  "outputs": {
@@ -296,7 +297,24 @@
    "220": 0.0,
    "225": 0.0
   },
-  "fence_arrival_time": "NOT MEASURED (outfield patch occluded by infielders; no carom; audio masked by cheering)",
+  "fence_arrival_pts_s": {
+   "median": 11.57,
+   "p10": 11.3,
+   "p90": 11.84,
+   "tag": "MODEL landing + USER-SUPPLIED 3.6 s roll",
+   "note": "not directly visible; two fielders are seen stationary at the wall on the spray line from ~11.2 s"
+  },
+  "contact_to_fence_s": {
+   "median": 6.53,
+   "p10": 6.26,
+   "p90": 6.8
+  },
+  "implied_mean_roll_speed_fps": {
+   "median": 24.3,
+   "p10": 17.1,
+   "p90": 31.1,
+   "note": "consistent with post-bounce ~32 ft/s and turf deceleration ~4 ft/s^2 (mu ~0.13)"
+  },
   "impact_height_on_fence": "NOT MEASURED; ball arrived bouncing/rolling, so near ground level",
   "camera_fit": {
    "f_px": {
