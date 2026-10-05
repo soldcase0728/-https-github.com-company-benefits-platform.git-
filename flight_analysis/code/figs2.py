@@ -2,13 +2,14 @@ import numpy as np, json, os, cv2
 import matplotlib; matplotlib.use('Agg'); import matplotlib.pyplot as plt
 from physics import FT, project
 from fastfly import fly
-import jointfit as J, calib2 as C
+import calib_aerial as CA, field as FD
 OUT = '..'; LIVE = '/tmp/claude-0/live'
 F = {int(f[1:4]): f for f in sorted(os.listdir(LIVE))}
-x = np.array(json.load(open('/tmp/claude-0/calib3.json'))['x']); f = x[-1]
-cam, ev, la, phi, tc, p0, _, _ = J.unpack(x[:-1], f)
-o = fly(ev, la, phi, *p0, 1.18, 0.33, 1500., 0., 0., 0., 0.002, 9., True)
-uv = project(o[:, 1:4], cam); T = o[:, 0] + tc
+x = np.array(json.load(open('/tmp/claude-0/ca_baseline_0.json'))); f = x[6]
+cam = CA.cam_of(x); ev, la, phi, tc = x[10:14]; p0 = np.array(x[14:17])*FT
+_to = np.radians(52 + 180 - 133.2); _w = 2.0*np.array([np.cos(_to), np.sin(_to), 0])
+o = fly(ev, la, phi, *p0, 1.221, 0.33, 1500., *_w, 0.002, 9., True)
+uv = CA.proj(o[:, 1:4], cam); T = o[:, 0] + tc
 tr = json.load(open(f'{OUT}/ball_track.json'))
 S = json.load(open(f'{OUT}/mc_summary.json')); R = S['results']
 # --- key frames
@@ -42,19 +43,19 @@ ax[1].plot(tt, U[:, 0]-P[:, 0], 'o-', ms=3, color='#2a78d6', label='u residual')
 ax[1].axhline(0, color='#52514e', lw=1); ax[1].set_xlabel('PTS (s)'); ax[1].set_ylabel('px'); ax[1].legend(frameon=False)
 ax[1].set_title(f'Reprojection residuals (RMS {np.sqrt(np.mean((U-P)**2)):.2f} px)', loc='left')
 fig.tight_layout(); fig.savefig(f'{OUT}/fig_track_reprojection.png', dpi=150); plt.close(fig)
-# --- schematic spray (aerial not provided)
-MC = json.load(open(f'{OUT}/mc_samples.json'))
-lx = np.array([s['land_x'] for s in MC if s.get('ok')]); ly = np.array([s['land_y'] for s in MC if s.get('ok')])
-fig, ax = plt.subplots(figsize=(6.4, 6.4))
-a = np.radians(np.linspace(-45, 45, 200))
-ax.plot(250*np.sin(a), 250*np.cos(a), color='#eb6834', lw=2, label='Fence, schematic 250 ft arc (true polyline unknown)')
-ax.plot(200*np.sin(a), 200*np.cos(a), color='#52514e', lw=1, ls=':', label='200-ft reference arc')
-for s_ in (-1, 1): ax.plot([0, s_*185], [0, 185], color='#52514e', lw=1)
-bx = [0, 42.43, 0, -42.43, 0]; by = [0, 42.43, 84.85, 42.43, 0]; ax.plot(bx, by, color='#52514e', lw=1)
-ax.plot([0, 256*np.sin(np.radians(12))], [0, 256*np.cos(np.radians(12))], color='#eda100', lw=2, label='User yellow line (~12° R, 250 ft) - approx.')
-ph = np.radians(R['phi']['median']); ax.plot([0, 260*np.sin(ph)], [0, 260*np.cos(ph)], color='#2a78d6', lw=2, label=f"Spray line {R['phi']['median']:.1f}° R of center")
-ax.scatter(ly[::5], lx[::5], s=3, color='#1baf7a', alpha=0.35, label='Modeled landing points (MC)')
-ax.set_aspect('equal'); ax.set_xlim(-200, 200); ax.set_ylim(-15, 275); ax.set_xlabel('ft  (+ = right field)'); ax.set_ylabel('ft toward CF')
-ax.set_title('Spray (schematic - aerial image was not provided)', loc='left', fontsize=11); ax.legend(fontsize=7.5, frameon=False, loc='lower center')
-fig.tight_layout(); fig.savefig(f'{OUT}/fig_spray_schematic.png', dpi=150); plt.close(fig)
+# --- spray line on the aerial
+A_ = cv2.imread(f'{OUT}/aerial.png'); sc = FD.scale_infield()[0]
+def to_px(X, Y): return FD.PLATE + (np.asarray(X)[..., None]*FD.C_HAT + np.asarray(Y)[..., None]*FD.Y_HAT)*sc
+ph = np.radians(R['phi']['median']); Df = FD.fence_D(R['phi']['median'], sc)
+p_end = to_px(Df*np.cos(ph), Df*np.sin(ph)); cv2.line(A_, tuple(FD.PLATE.astype(int)), tuple(p_end.astype(int)), (214, 120, 42), 3)
+for s_ in MC[::4]:
+    if s_.get('ok'): cv2.circle(A_, tuple(to_px(s_['land_x'], s_['land_y']).astype(int)), 1, (122, 175, 27), -1)
+L_ = to_px(R['land_x']['median'], R['land_y']['median']); cv2.circle(A_, tuple(L_.astype(int)), 7, (122, 175, 27), 2)
+for k_, v_ in FD.POLES_PX.items(): cv2.drawMarker(A_, tuple(np.array(v_).astype(int)), (0, 0, 255), cv2.MARKER_SQUARE, 10, 2)
+cam_px = to_px(R['Xc']['median'], R['Yc']['median']); cv2.drawMarker(A_, tuple(cam_px.astype(int)), (0, 0, 255), cv2.MARKER_DIAMOND, 12, 2)
+for t_, y_ in ((f"Spray {R['phi']['median']:.1f} deg R of center (blue); fence here ~{Df:.0f} ft", 20),
+               (f"Green: modeled landing points (MC); circle = median {R['carry']['median']:.0f} ft", 42),
+               ("Red squares: light-pole bases used for calibration; red diamond: camera", 64)):
+    cv2.rectangle(A_, (4, y_-16), (8+9*len(t_), y_+6), (252, 252, 251), -1); cv2.putText(A_, t_, (6, y_), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (11, 11, 11), 1)
+cv2.imwrite(f'{OUT}/fig_spray_on_aerial.png', A_)
 print('nominal', dict(f=f, ev=ev, la=la, phi=phi, tc=tc))
