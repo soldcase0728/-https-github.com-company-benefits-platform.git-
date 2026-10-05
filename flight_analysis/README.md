@@ -41,6 +41,22 @@ The camera sees the ball's elevation peak about 0.95 s after contact, at only �
 
 A possible reconciliation, not measured: a ball landing at ~40 mph and a 36° descent on turf takes a long, high first hop. The last big hop near the wall can look like "the landing" from the stands. See `eyewitness_test.json`.
 
+## Apex check: could the apex be over the edge of the infield dirt (~120–128 ft)?
+
+The edge of the maroon infield arc along the spray line is **119 ft** from the plate apex (the grey marker on your yellow line is at 128 ft). I re-fitted with the apex forced to 122 ± 5 ft (`apex_test.json`):
+
+| Spin assumption | Free-fit apex | Forced fit reaches | Track misfit increase (Δχ²) |
+|---|---|---|---|
+| 1,500 rpm (nominal) | 27 ft high at **88 ft** | only 100 ft | 28 |
+| 500 rpm (low lift) | 31 ft high at **106 ft** | only 113 ft | 5 |
+| 2,500 rpm, low drag | 24 ft high at **73 ft** | only 86 ft | 69 |
+
+The apex distance depends on spin: 74–103 ft in the Monte Carlo (80%), reaching ~106–113 ft only with very low spin. **No setting reaches 120 ft** while still matching the tracked ball.
+
+It's also inconsistent with the 3.6 s roll. With drag, the apex sits at about 53% of the carry (88 of 165 ft here). An apex at ~122 ft implies landing at ~220–230 ft, leaving only ~25–30 ft to roll in 3.6 s, about 8 ft/s, for a ball that lands moving ~50+ ft/s.
+
+**Why it can look farther out on video.** From behind the plate the ball is seen against the sky, so the eye places it over the distant outfield behind it. The ball is highest *in the image* at ≈5.95 s (≈0.9 s after contact). At that moment it is actually ≈55–60 ft from the plate and ≈23 ft up. In the image that point sits directly above the outfield fence line.
+
 ## Inputs
 
 | Input | Value | σ / range | Tag | Source |
@@ -150,7 +166,7 @@ Rejection rule: fit failed, EV > 100 mph, cost > 3× median, or track χ² > 112
 | `fig_camera_calibration.png` | aerial geometry projected through the fitted camera |
 | `fig_track_reprojection.png` | track fit residuals |
 | `reference_grid.json` | carry and hang for EV 60–90 × LA 10–45 (sanity grid) |
-| `eyewitness_test.json`, `fly_vs_bounce_test_v1calib.json` | consistency tests (the second used the earlier, superseded calibration) |
+| `apex_test.json`, `eyewitness_test.json`, `fly_vs_bounce_test_v1calib.json` | consistency tests (the second used the earlier, superseded calibration) |
 | `frame_pts.csv`, `ball_track*.json`, `crops/` | timing table, detections, crops |
 | `code/` | `physics.py`, `fastfly.py`, `field.py`, `calib_aerial.py`, `mc2.py`, `tornado2.py`, `summarize.py`, `figs2.py`, `fig_calib.py`, `make_results.py`. Earlier exploratory fits: `jointfit.py`, `calib2.py`, `mc.py` |
 
