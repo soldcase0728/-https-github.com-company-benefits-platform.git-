@@ -86,7 +86,7 @@ ax.plot(tt, [1.6]*len(tt), '|', color=C1, ms=10); ax.text(5.2, 1.85, f'Ball trac
 ax.axvspan(tl['p10'], tl['p90'], color=C3, alpha=0.3, lw=0); ax.text((tl['p10']+tl['p90'])/2, 0.9, f"Modeled landing\n{tl['median']:.2f} s (10–90%)", ha='center', fontsize=8)
 fa0, fa1 = tl['p10'] + 3.6, tl['p90'] + 3.6
 ax.axvspan(fa0 - 0.2, fa1 + 0.2, color=C2, alpha=0.25, lw=0); ax.text((fa0+fa1)/2, 2.6, f"Fence arrival\n≈{tl['median']+3.6:.1f} s\n(landing + 3.6 s roll,\nuser-supplied)", ha='center', fontsize=8)
-ax.annotate('', xy=(fa0, 1.2), xytext=(tl['median'], 1.2), arrowprops=dict(arrowstyle='->', color=INK2, lw=1)); ax.text((tl['median']+fa0)/2, 1.35, 'bounce/roll ≈88 ft', ha='center', fontsize=8, color=INK2)
+ax.annotate('', xy=(fa0, 1.9), xytext=(tl['median']+0.1, 1.9), arrowprops=dict(arrowstyle='->', color=INK2, lw=1)); ax.text((tl['median']+fa0)/2, 2.05, 'bounce/roll ≈88 ft', ha='center', fontsize=8, color=INK2)
 pts = json.load(open('/tmp/claude-0/pts_live.json')) if os.path.exists('/tmp/claude-0/pts_live.json') else None
 ax.set_xlim(4.6, 12.6); ax.set_ylim(0, 4); ax.set_yticks([]); ax.set_xlabel('Video PTS (s)')
 ax.set_title(f"Timing: contact {tc['median']:.2f} s, landing {tl['median']:.2f} s (hang {R['hang']['median']:.2f} s), fence ≈{tl['median']+3.6:.1f} s", loc='left', fontsize=12)
