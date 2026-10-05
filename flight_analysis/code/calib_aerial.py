@@ -51,7 +51,9 @@ def residuals(x, cd=0.33, rpm=1500., rho=1.221, wind=np.zeros(3), hc_prior=(5.0,
         r[k] = (proj(np.array(g)*FT, cam) - px)/s
     # camera on the backstop netting line (aerial), +-1 ft
     a, b = NET; n = np.array([-(b - a)[1], (b - a)[0]]); n /= np.linalg.norm(n)
-    r['net'] = np.array([(np.array([x[0], x[1]]) - a) @ n/1.0])
+    s0 = np.sign((np.zeros(2) - a) @ n)          # sign of the field side of the netting
+    d = (np.array([x[0], x[1]]) - a) @ n
+    r['net'] = np.array([(d + s0*NET_OFFSET)/NET_SIG])
     r['priors'] = np.array([(x[2] - hc_prior[0])/hc_prior[1], x[5]/3.0, x[7]/0.15, (tc - TC0)/0.033,
                             (x[14] - 2.0)/0.75, (x[15] - 0.3)/0.7, (x[16] - 2.5)/0.5])
     if use_line:
@@ -60,6 +62,7 @@ def residuals(x, cd=0.33, rpm=1500., rho=1.221, wind=np.zeros(3), hc_prior=(5.0,
         r['line'] = (np.interp(UA, uv[o2, 0], uv[o2, 1]) - (-0.16315*UA + 722.15))/3.0
     return r if parts else np.concatenate([np.ravel(v) for v in r.values()])
 TC0 = 5.000
+NET_OFFSET, NET_SIG = 2.0, 0.75   # USER-SUPPLIED: camera ~2 ft behind the backstop fence line
 def fit(x0=X0, **kw):
     best = None
     for f0 in (650, 850, 1050):

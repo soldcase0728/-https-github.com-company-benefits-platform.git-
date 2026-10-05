@@ -4,10 +4,10 @@ Grand Park (Westfield, IN), Field 13 · 3 Oct 2026, ≈8:30 AM EDT · left-hande
 
 ## Headline
 
-**The ball landed in right-center about 166 ft out (80% interval 144–190 ft), 2.95 s after contact. It then bounced and rolled ≈86 ft to the ≈252-ft fence; it did not reach the fence on the fly.**
+**The ball landed in right-center about 164 ft out (80% interval 142–190 ft), 2.93 s after contact. It then bounced and rolled ≈88 ft to the ≈252-ft fence; it did not reach the fence on the fly.**
 
 - **Launch:** EV ≈ 55 mph (80%: 48–63) at LA ≈ 27° (80%: 26–28).
-- **Direction:** 12.6° right of straightaway center (80%: 11.7–13.4°).
+- **Direction:** 12.4° right of straightaway center (80%: 11.5–13.2°).
 - **Not measurable from this clip:** when the ball reached the fence, and how high on the fence it hit.
 
 Tags: **MEASURED** = taken from the video, aerial or weather record. **ASSUMED** = model prior. **USER-SUPPLIED** = provided by you.
@@ -16,13 +16,13 @@ Tags: **MEASURED** = taken from the video, aerial or weather record. **ASSUMED**
 
 | # | Question | Answer | Tag / basis |
 |---|---|---|---|
-| 1 | Fly or bounce? | **Bounce.** P(fly to fence) = 0/5,000 Monte Carlo draws. Forcing a landing within 20 ft of the fence raises track misfit by Δχ² = 58–71. | MEASURED track + aerial calibration |
-| 2a | Where did it reach the fence? | Spray 12.6° R (80%: 11.7–13.4°). Landing azimuth 13.7° (crosswind drift). This is the yellow-line fence bend, **D = 252 ft** (80%: 249–255). | MEASURED (aerial D(φ)) |
-| 2b | When did it reach the fence? | Landing at PTS 7.98 s (80%: 7.91–8.06), hang time **2.95 s** (80%: 2.87–3.02). Fence arrival = landing + roll time, and the roll was **not observable**. ~86 ft of turf roll from ~47 ft/s plausibly takes 2–3 s, so arrival ≈ 10–11 s. That figure is a rough model estimate, not a measurement. | MEASURED landing time; roll time unmeasured |
+| 1 | Fly or bounce? | **Bounce.** P(fly to fence) = 0/5,000 Monte Carlo draws. Forcing a landing within 20 ft of the fence raises track misfit by Δχ² = 60–75. | MEASURED track + aerial calibration |
+| 2a | Where did it reach the fence? | Spray 12.4° R (80%: 11.5–13.2°). Landing azimuth 13.6° (crosswind drift). This is the yellow-line fence bend, **D = 252 ft** (80%: 249–255). | MEASURED (aerial D(φ)) |
+| 2b | When did it reach the fence? | Landing at PTS 7.97 s (80%: 7.90–8.05), hang time **2.93 s** (80%: 2.85–3.01). Fence arrival = landing + roll time, and the roll was **not observable**. ~88 ft of turf roll from ~47 ft/s plausibly takes 2–3 s, so arrival ≈ 10–11 s. That figure is a rough model estimate, not a measurement. | MEASURED landing time; roll time unmeasured |
 | 2c | How high on the fence? | Not measurable. The ball arrived bouncing or rolling, so near ground level. | — |
-| 3 | Trajectory | EV **55.1 mph** (48.4–63.2) · LA **26.8°** (25.8–27.8) · apex **27.3 ft** (24.5–30.5) at 89 ft, 1.41 s after contact · hang **2.95 s** · lands at 40 mph, descending 36° | Method B fit; spin-limited (see §Uncertainty) |
-| 4 | Carry with no fence | **166 ft** (80%: 144–190; 90%: 139–196), from the plate apex | Model + MEASURED track |
-| 5 | Height at 200 / 210 / 220 / 225 ft | Reached 200 ft in flight in only 3% of draws (then ~3 ft high); 210 ft 1%; 220/225 ft 0%. **P(clearing a 4–8 ft fence)** at 200 ft 0.9%, 210 ft 0.1%, 220 ft 0%, 225 ft 0%. **Not a home run over any standard 16U fence.** | MC |
+| 3 | Trajectory | EV **54.9 mph** (48.0–63.1) · LA **26.7°** (25.7–27.8) · apex **27.2 ft** (24.4–30.5) at 88 ft, 1.40 s after contact · hang **2.93 s** · lands at 40 mph, descending 36° | Method B fit; spin-limited (see §Uncertainty) |
+| 4 | Carry with no fence | **164 ft** (80%: 142–190; 90%: 137–196), from the plate apex | Model + MEASURED track |
+| 5 | Height at 200 / 210 / 220 / 225 ft | Reached 200 ft in flight in only 3% of draws (then ~3 ft high); 210 ft 1%; 220/225 ft 0%. **P(clearing a 4–8 ft fence)** at 200 ft 0.7%, 210 ft 0.1%, 220 ft 0%, 225 ft 0%. **Not a home run over any standard 16U fence.** | MC |
 
 > **For public use** (highlight or recruiting graphic), quote only the measured facts plus the 10th-percentile carry, rounded down: *"Line drive into the right-center gap (~13° right of center), landed ~140+ ft out and rolled to the 250-ft fence for a triple."* Don't quote EV as a measured number; it depends mainly on assumed spin.
 
@@ -32,8 +32,8 @@ A 0.4 s roll implies landing ≈20 ft short of the fence (≈230–235 ft). The 
 
 | Case | Free fit landing | Forced landing (D − 20 ± 8 ft) | Track χ² free → forced | Δχ² |
 |---|---|---|---|---|
-| Nominal aero | 156 ft | only reaches 192 ft | 3.6 → 29.1 | **58** |
-| Most carry-friendly (C_D 0.28, 2,500 rpm, tailwind) | 149 ft | only reaches 185 ft | 4.0 → 30.7 | **71** |
+| Nominal aero | 155 ft | only reaches 191 ft | 3.7 → 28.5 | **60** |
+| Most carry-friendly (C_D 0.28, 2,500 rpm, tailwind) | 147 ft | only reaches 184 ft | 5.1 → 30.2 | **75** |
 
 The camera sees the ball's elevation peak about 0.95 s after contact, at only ≈12° above the horizon. A ball that carries 230+ ft would still be climbing in the image well past that point.
 
@@ -49,8 +49,8 @@ A possible reconciliation, not measured: a ball landing at ~40 mph and a 36° de
 | Ball track | 28 points, 5.200–6.167 s | 0.5–1 px | MEASURED | `ball_track.json`, `crops/track/` |
 | Aerial scale | 2.616 px/ft (infield) / 2.686 (250-ft line) | 2.7% apart → sampled | MEASURED / USER-SUPPLIED | `aerial.png` |
 | Fence D(φ) | 249–257 ft over φ = −15…+15° | scale spread | MEASURED | aerial polyline (`code/field.py`) |
-| Camera position | 27.3 ft behind apex, on backstop netting | ±1 ft | MEASURED | aerial |
-| Camera height | prior 5.0 ft → fitted **5.7 ft** (5.35–6.03) | ±0.5 prior | USER-SUPPLIED prior | "about 60 in" |
+| Camera position | backstop netting 27.3 ft behind apex (aerial) + ~2 ft behind the fence → fitted **28.5 ft** (27.7–29.4) | ±0.75 ft | MEASURED + USER-SUPPLIED | aerial; "about 2 ft from the fence line" |
+| Camera height | prior 5.0 ft → fitted **5.8 ft** (5.5–6.1) | ±0.5 prior | USER-SUPPLIED prior | "about 60 in" |
 | Light poles | 2 bases from aerial shadows; heights fitted 56–57 ft | ±4 px | MEASURED | aerial + video poles u = 342, 1019 |
 | Air density | 1.221 kg/m³ | ±0.012 | MEASURED (reanalysis) | Open-Meteo: 9.2 °C, RH 92%, 993.8 hPa, 268 m |
 | Wind | 2.7 m/s (10 m) from 52° → ~2 m/s crosswind toward RF at ball height | ±1 m/s, ±25° | MEASURED (reanalysis) | Open-Meteo archive, 08:00–09:00 EDT |
@@ -66,25 +66,25 @@ A possible reconciliation, not measured: a ball landing at ~40 mph and a 36° de
 
 | Quantity | Median | 10th–90th | 5th–95th |
 |---|---|---|---|
-| Exit velocity (mph) | 55.1 | 48.4–63.2 | 47.3–64.7 |
-| Launch angle (°) | 26.8 | 25.8–27.8 | 25.5–28.1 |
-| Spray angle (° R of center) | 12.6 | 11.7–13.4 | 11.4–13.6 |
-| Contact time, fit (PTS s) | 5.039 | 5.03–5.05 | 5.03–5.05 |
-| Hang time to landing (s) | 2.95 | 2.87–3.02 | 2.85–3.04 |
-| Landing distance / carry, no fence (ft) | 165.8 | 143.5–190.3 | 138.8–196.2 |
-| Fence distance at landing azimuth (ft) | 251.9 | 249.1–254.5 | 248.7–255.0 |
-| Bounce/roll distance to fence (ft) | 85.9 | 61.0–108.7 | 55.2–113.2 |
-| Apex height (ft) | 27.3 | 24.5–30.5 | 24.0–31.2 |
-| Apex distance (ft) / time after contact (s) | 88.9 / 1.41 | 76–103 / 1.37–1.45 | — |
-| Landing speed (mph) / descent angle (°) | 39.9 / 36.0 | 36.7–43.6 / 34.4–37.6 | — |
-| Camera focal length (px) | 770 | 750–789 | 746–794 |
+| Exit velocity (mph) | 54.9 | 48.0–63.1 | 46.9–64.6 |
+| Launch angle (°) | 26.7 | 25.7–27.8 | 25.4–28.0 |
+| Spray angle (° R of center) | 12.4 | 11.5–13.2 | 11.2–13.4 |
+| Contact time, fit (PTS s) | 5.04 | 5.03–5.05 | 5.03–5.06 |
+| Hang time to landing (s) | 2.93 | 2.85–3.01 | 2.83–3.03 |
+| Landing distance / carry, no fence (ft) | 164.5 | 141.6–189.6 | 136.8–195.6 |
+| Fence distance at landing azimuth (ft) | 252.1 | 249.3–254.7 | 248.9–255.2 |
+| Bounce/roll distance to fence (ft) | 87.5 | 61.9–110.8 | 55.9–115.3 |
+| Apex height (ft) | 27.2 | 24.4–30.5 | 23.9–31.1 |
+| Apex distance (ft) / time after contact (s) | 87.8 / 1.40 | 74–103 / 1.36–1.44 | — |
+| Landing speed (mph) / descent angle (°) | 39.9 / 35.9 | 36.7–43.6 / 34.3–37.6 | — |
+| Camera focal length (px) | 783 | 761–803 | 756–809 |
 
 Rejection rule: fit failed, EV > 100 mph, cost > 3× median, or track χ² > 112.
 
 ## Method summary
 
 1. **Timing.** I built a per-frame PTS table; all times come from PTS, never frame index ÷ fps.
-   - **Contact:** bracketed visually at 5.000 ± 0.033 s. The trajectory fit puts it at 5.039 s.
+   - **Contact:** bracketed visually at 5.000 ± 0.033 s. The trajectory fit puts it at 5.04 s.
    - **Audio check:** the crack (5.086 s) minus 0.024 s of sound travel over 27 ft gives ≈0.02 s of residual A/V lag.
    - **Correction to the preliminary notes:** their ≈0.1 s audio lag came from a contact time that was too early.
    - **Encoder artifacts:** H.264 skip-blocks freeze the tiny ball in some B-frames. Those frames (i175–176) are excluded.
@@ -93,12 +93,12 @@ Rejection rule: fit failed, EV > 100 mph, cost > 3× median, or track χ² > 112
    - both light poles (base, shaft and lamp head)
    - 12 fence-base rows checked against the aerial polyline
    - the pitcher's feet at the rubber and the batter's back foot
-   - the camera constrained to the aerial backstop line, with your height prior
+   - the camera constrained to ~2 ft behind the aerial backstop line (your note), with your height prior
    - a radial-distortion term
    - the ball track
 
    Every landmark residual is ≤ 1.9σ (`fig_camera_calibration.png`). A white chalk line I had first taken for the 1B foul line is inconsistent (Δχ² ≈ 40). It's a different marking and is excluded.
-4. **Track and fit.** Method B: fit EV, LA, spray, contact time and contact point to the 28 rays plus all landmarks. Track residual RMS is 0.27 px (`fig_track_reprojection.png`).
+4. **Track and fit.** Method B: fit EV, LA, spray, contact time and contact point to the 28 rays plus all landmarks. Track residual RMS is 0.29 px (`fig_track_reprojection.png`).
    - Method A (shooting to a fence impact) is not applicable: the ball never reached the fence in flight, and the fence-arrival time is unobservable.
    - The integrator is RK4 at dt = 2 ms (numba), checked against `solve_ivp` (rtol 1e-8): carry within 0.01 ft, hang time within 0.1 ms.
 5. **Uncertainty.** Each of the 5,000 draws resamples:
@@ -112,10 +112,10 @@ Rejection rule: fit failed, EV > 100 mph, cost > 3× median, or track χ² > 112
 ## Uncertainty: what drives what
 
 **Spearman rank correlations** (from the MC draws):
-- **Carry:** spin −0.87, wind (along-flight) +0.29, everything else under 0.1.
-- **EV:** spin −0.93.
+- **Carry:** spin −0.88, wind (along-flight) +0.29, everything else under 0.1.
+- **EV:** spin −0.94.
 - **LA:** wind speed −0.65.
-- **Hang time:** spin −0.58, wind +0.45.
+- **Hang time:** spin −0.64, wind +0.41.
 
 **Tornado** (`fig_tornado_carry.png`):
 - Spin 700 → 2,300 rpm moves carry +23 / −20 ft.
